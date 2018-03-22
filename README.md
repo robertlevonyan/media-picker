@@ -78,8 +78,8 @@ Showing picker
 ```kotlin
   pickerDialog.show()
 ```
-
 And the result is
-|List picker                            |Grid picker                             |
-|---------------------------------------|----------------------------------------|
+
+|List picker                                            |Grid picker                                                |
+|-------------------------------------------------------|-----------------------------------------------------------|
 |<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_grid.jpg"  width="500" />|
