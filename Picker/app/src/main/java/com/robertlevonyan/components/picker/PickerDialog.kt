@@ -454,7 +454,11 @@ class PickerDialog : BottomSheetDialogFragment() {
 
         var bitmap: Bitmap
         try {
-            bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = false
+            options.inPreferredConfig = Bitmap.Config.RGB_565
+            options.inDither = true
+            bitmap = BitmapFactory.decodeFile(uri.realPath(context!!).path, options)
 
             val exif = ExifInterface(uri.realPath(context!!).path)
 
