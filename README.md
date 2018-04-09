@@ -12,7 +12,7 @@
 Add following line of code to your module(app) level gradle file
 
 ```groovy
-    implementation 'com.robertlevonyan.components:Picker:1.0.5'
+    implementation 'com.robertlevonyan.components:Picker:1.1.1'
 ```
 
 #### Maven:
@@ -21,7 +21,7 @@ Add following line of code to your module(app) level gradle file
   <dependency>
     <groupId>com.robertlevonyan.components</groupId>
     <artifactId>Picker</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.1</version>
     <type>pom</type>
   </dependency>
 ```
