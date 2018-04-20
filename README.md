@@ -133,3 +133,5 @@ First version of library
     See the License for the specific language governing permissions and
     limitations under the License.
 ```
+
+<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/logo_title.png"/>
