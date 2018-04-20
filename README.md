@@ -1,4 +1,4 @@
-# <img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/logo.png"  width="70" height="70" /> Universal Media Picker
+# <img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/logo.png"  width="30" height="30" /> Universal Media Picker
 
 |Easy customizable picker for all your needs in Android application|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker.png"  width="400" />|
 |----------------------------------------------------------------------------------------------|-----------|
