@@ -12,7 +12,7 @@
 Add following line of code to your module(app) level gradle file
 
 ```groovy
-    implementation 'com.robertlevonyan.components:Picker:1.1.1'
+    implementation 'com.robertlevonyan.components:Picker:1.1.2'
 ```
 
 #### Maven:
@@ -21,7 +21,7 @@ Add following line of code to your module(app) level gradle file
   <dependency>
     <groupId>com.robertlevonyan.components</groupId>
     <artifactId>Picker</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <type>pom</type>
   </dependency>
 ```
@@ -36,6 +36,7 @@ Buildung picker
                        .setTitleTextColor(...) // Color of title text
                        .setListType(...)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
                        .setItems(...)          // List of ItemModel-s which should be in picker
+                       .setDialogStyle(...)    // PickerDialog.DIALOG_STANDARD (square corners) or PickerDialog.DIALOG_MATERIAL (rounded corners)
                        .create()               // Create picker
 ```
 Creating items
@@ -87,6 +88,10 @@ And the result is
 |-------------------------------------------------------|-----------------------------------------------------------|
 |<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_grid.jpg"  width="500" />|
 
+|Standard picker                                         |Material picker                                           |
+|-------------------------------------------------------|-----------------------------------------------------------|
+|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_standard.png"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_material.png"  width="500" />|
+
 Getting the result
 ```kotlin
     pickerDialog.setPickerCloseListener { type, uri ->
@@ -100,6 +105,9 @@ Getting the result
      }
 ```
 ## Versions
+
+### 1.1.1 - 1.1.2
+Refactoring and some UI changes
 
 ### 1.0.0 - 1.0.5
 
