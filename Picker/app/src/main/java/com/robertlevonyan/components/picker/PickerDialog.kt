@@ -6,6 +6,7 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.media.ExifInterface
@@ -15,6 +16,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.annotation.IntDef
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
@@ -47,6 +49,8 @@ class PickerDialog : BottomSheetDialogFragment() {
     private var dialogListType = TYPE_LIST
     private var dialogGridSpan = 3
     private var dialogItems = ArrayList<ItemModel>()
+    @DialogStyle
+    private var dialogStyle = DIALOG_STANDARD
 
     companion object {
         private const val ARG_TITLE = "title"
@@ -74,7 +78,7 @@ class PickerDialog : BottomSheetDialogFragment() {
                 dialogTitleId: Int,
                 dialogTitleSize: Float,
                 dialogTitleColor: Int,
-                dialogListType: Long,
+                dialogListType: Int,
                 dialogGridSpan: Int,
                 dialogItems: ArrayList<ItemModel>): PickerDialog {
 
@@ -84,7 +88,7 @@ class PickerDialog : BottomSheetDialogFragment() {
             args.putInt(ARG_TITLE_ID, dialogTitleId)
             args.putFloat(ARG_TITLE_SIZE, dialogTitleSize)
             args.putInt(ARG_TITLE_COLOR, dialogTitleColor)
-            args.putLong(ARG_LIST_TYPE, dialogListType)
+            args.putInt(ARG_LIST_TYPE, dialogListType)
             args.putInt(ARG_GRID_SPAN, dialogGridSpan)
             args.putParcelableArrayList(ARG_ITEMS, dialogItems)
 
@@ -100,8 +104,15 @@ class PickerDialog : BottomSheetDialogFragment() {
         @Retention(AnnotationRetention.SOURCE)
         annotation class ListType
 
-        const val TYPE_LIST = 0L
-        const val TYPE_GRID = 1L
+        const val TYPE_LIST = 0
+        const val TYPE_GRID = 1
+
+        @IntDef(DIALOG_STANDARD, DIALOG_MATERIAL)
+        @Retention(AnnotationRetention.SOURCE)
+        annotation class DialogStyle
+
+        const val DIALOG_STANDARD = 10
+        const val DIALOG_MATERIAL = 20
     }
 
     class Builder {
@@ -116,6 +127,8 @@ class PickerDialog : BottomSheetDialogFragment() {
         private var dialogListType = TYPE_LIST
         private var dialogGridSpan = 3
         private var dialogItems = ArrayList<ItemModel>()
+        @DialogStyle
+        private var dialogStl = DIALOG_STANDARD
 
         constructor(activity: AppCompatActivity) {
             this.activity = activity
@@ -145,7 +158,7 @@ class PickerDialog : BottomSheetDialogFragment() {
             return this
         }
 
-        fun setListType(@ListType type: Long, gridSpan: Int = 3): Builder {
+        fun setListType(@ListType type: Int, gridSpan: Int = 3): Builder {
             dialogListType = type
             dialogGridSpan = gridSpan
             return this
@@ -163,8 +176,13 @@ class PickerDialog : BottomSheetDialogFragment() {
             return this
         }
 
+        fun setDialogStyle(@DialogStyle style: Int): Builder {
+            dialogStl = style
+            return this
+        }
+
         fun create(): PickerDialog {
-            return newInstance(
+            val dialog = newInstance(
                     activity,
                     fragment,
                     dialogTitle,
@@ -175,8 +193,18 @@ class PickerDialog : BottomSheetDialogFragment() {
                     dialogGridSpan,
                     dialogItems
             )
+
+            dialog.dialogStyle = dialogStl
+
+            return dialog
         }
     }
+
+    override fun getTheme() = if (dialogStyle == DIALOG_MATERIAL)
+        R.style.BottomSheetDialogTheme
+    else R.style.BottomSheetDialogThemeNormal
+
+    override fun onCreateDialog(savedInstanceState: Bundle?) = BottomSheetDialog(requireContext(), theme)
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -198,7 +226,7 @@ class PickerDialog : BottomSheetDialogFragment() {
         dialogTitleId = args.getInt(ARG_TITLE_ID)
         dialogTitleSize = args.getFloat(ARG_TITLE_SIZE)
         dialogTitleColor = args.getInt(ARG_TITLE_COLOR)
-        dialogListType = args.getLong(ARG_LIST_TYPE)
+        dialogListType = args.getInt(ARG_LIST_TYPE)
         dialogGridSpan = args.getInt(ARG_GRID_SPAN)
         dialogItems = args.getParcelableArrayList(ARG_ITEMS)
     }
@@ -256,14 +284,12 @@ class PickerDialog : BottomSheetDialogFragment() {
                             }
                         }
                         ItemModel.ITEM_GALLERY -> {
-                            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
-                                    != PackageManager.PERMISSION_GRANTED
-                                    || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
                                     != PackageManager.PERMISSION_GRANTED
                                     || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                     != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(activity!!,
-                                        arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                                         REQUEST_PERMISSION_GALLERY)
                             } else {
                                 openGallery()
@@ -284,28 +310,24 @@ class PickerDialog : BottomSheetDialogFragment() {
                             }
                         }
                         ItemModel.ITEM_VIDEO_GALLERY -> {
-                            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
-                                    != PackageManager.PERMISSION_GRANTED
-                                    || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
                                     != PackageManager.PERMISSION_GRANTED
                                     || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                     != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(activity!!,
-                                        arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                                         REQUEST_PERMISSION_VGALLERY)
                             } else {
                                 openVideoGallery()
                             }
                         }
                         ItemModel.ITEM_FILES -> {
-                            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
-                                    != PackageManager.PERMISSION_GRANTED
-                                    || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
+                            if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_EXTERNAL_STORAGE)
                                     != PackageManager.PERMISSION_GRANTED
                                     || ActivityCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                     != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(activity!!,
-                                        arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE),
                                         REQUEST_PERMISSION_FILE)
                             } else {
                                 openFilePicker()
@@ -517,7 +539,7 @@ class PickerDialog : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    fun setPickerCloseListener(onClose: (Long, Uri) -> Unit) {
+    fun setPickerCloseListener(onClose: (Int, Uri) -> Unit) {
         onPickerCloseListener = OnPickerCloseListener(onClose)
     }
 
