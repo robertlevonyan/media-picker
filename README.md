@@ -122,6 +122,8 @@ First version of library
 - **Facebook**: https://facebook.com/robert.levonyan
 - **Google Play**: https://play.google.com/store/apps/dev?id=5477562049350283357
 
+Special thanks to @chimzycash for createing an amazing logo for this project ☺️
+
 ## Licence
 
 ```
