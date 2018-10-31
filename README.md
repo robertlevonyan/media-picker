@@ -12,7 +12,7 @@
 Add following line of code to your module(app) level gradle file
 
 ```groovy
-    implementation 'com.robertlevonyan.components:Picker:1.1.3'
+    implementation 'com.robertlevonyan.components:Picker:1.1.5'
 ```
 
 #### Maven:
