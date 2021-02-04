@@ -12,7 +12,7 @@
 Add following line of code to your module(app) level gradle file
 
 ```groovy
-    implementation 'com.robertlevonyan.components:Picker:1.1.5'
+    implementation 'com.robertlevonyan.components:Picker:<LATEST_VERSION>'
 ```
 
 #### Maven:
@@ -21,7 +21,7 @@ Add following line of code to your module(app) level gradle file
   <dependency>
     <groupId>com.robertlevonyan.components</groupId>
     <artifactId>Picker</artifactId>
-    <version>1.1.3</version>
+    <version>LATEST_VERSION</version>
     <type>pom</type>
   </dependency>
 ```
@@ -30,15 +30,25 @@ Add following line of code to your module(app) level gradle file
 
 Buildung picker
 ```kotlin
-  val pickerDialog = PickerDialog.Builder(this)// Activity or Fragment
-                       .setTitle(...)          // String value or resource ID
-                       .setTitleTextSize(...)  // Text size of title
-                       .setTitleTextColor(...) // Color of title text
-                       .setListType(...)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
-                       .setItems(...)          // List of ItemModel-s which should be in picker
-                       .setDialogStyle(...)    // PickerDialog.DIALOG_STANDARD (square corners) or PickerDialog.DIALOG_MATERIAL (rounded corners)
-                       .create()               // Create picker
+  // in fragment or activity
+  pickerDialog {
+    setTitle(...)          // String value or resource ID
+    setTitleTextSize(...)  // Text size of title
+    setTitleTextColor(...) // Color of title text
+    setListType(...)       // Type of the picker, must be PickerDialog.TYPE_LIST or PickerDialog.TYPE_Grid
+    setItems(...)          // List of ItemModel-s which should be in picker
+ }.setPickerCloseListener { type: ItemType, uris: List<Uri> ->
+   // Getting the result
+   when (type) {
+            ItemModel.ITEM_CAMERA -> /* do something with the photo you've taken */
+            ItemModel.ITEM_GALLERY -> /* do something with the images you've chosen */
+            ItemModel.ITEM_VIDEO -> /* do something with the video you've recorded */
+            ItemModel.ITEM_VIDEO_GALLERY -> /* do something with the videos you've chosen */
+            ItemModel.ITEM_FILES -> /* do something with the files you've chosen */
+        }
+ }.show()
 ```
+
 Creating items
 ```kotlin
   /*  Create a camera item, can be
@@ -63,53 +73,24 @@ Creating items
                     )
 ```
 
-Passing permissions from Activity
-```kotlin
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        pickerDialog.onPermissionsResult(requestCode, permissions, grantResults)
-    }
-    
-    // or if you have a fragment
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        myFragment.pickerDialog.onPermissionsResult(requestCode, permissions, grantResults)
-    }
-```
-
-Showing picker
-```kotlin
-  pickerDialog.show()
-```
-
 And the result is
 
 |List picker                                            |Grid picker                                                |
 |-------------------------------------------------------|-----------------------------------------------------------|
 |<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_grid.jpg"  width="500" />|
 
-|Standard picker                                         |Material picker                                           |
-|-------------------------------------------------------|-----------------------------------------------------------|
-|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_standard.png"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_material.png"  width="500" />|
-
-Getting the result
-```kotlin
-    pickerDialog.setPickerCloseListener { type, uri ->
-        when (type) {
-            ItemModel.ITEM_CAMERA -> /* do something with the photo you've taken */
-            ItemModel.ITEM_GALLERY -> /* do something with the image you've chosen */
-            ItemModel.ITEM_VIDEO -> /* do something with the video you've recorded */
-            ItemModel.ITEM_VIDEO_GALLERY -> /* do something with the video you've chosen */
-            ItemModel.ITEM_FILES -> /* do something with the file you've chosen */
-        }
-     }
-```
 ## Versions
 
-### 1.1.1 - 1.1.2
+### 2.0.0
+
+New version of library.
+Mostly rewritten. Now supports multiple selection.
+
+#### 1.0.1 - 1.1.5
+
 Refactoring and some UI changes
 
-### 1.0.0 - 1.0.5
+### 1.0.0
 
 First version of library
 
