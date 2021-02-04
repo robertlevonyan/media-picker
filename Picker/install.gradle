@@ -1,0 +1,39 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.robertlevonyan.components'
+
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'aar'
+                groupId 'com.robertlevonyan.components'
+                artifactId 'Picker'
+                name 'Picker'
+                description 'Easy customizable picker for all your needs in Android application.'
+                url 'https://github.com/robertlevonyan/MediaPicker'
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'robertlevonyan'
+                        name 'Robert Levonyan'
+                        email 'me@robertlevonyan.com'
+                    }
+                }
+
+                scm {
+                    connection 'https://github.com/robertlevonyan/MediaPicker'
+                    developerConnection 'https://github.com/robertlevonyan'
+                    url 'https://robertlevonyan.com'
+                }
+            }
+        }
+    }
+}

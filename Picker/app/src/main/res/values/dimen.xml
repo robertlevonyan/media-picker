@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="margin">16dp</dimen>
-    <dimen name="margin_big">36dp</dimen>
-    <dimen name="icon">48dp</dimen>
-    <dimen name="icon_small">40dp</dimen>
-</resources>
