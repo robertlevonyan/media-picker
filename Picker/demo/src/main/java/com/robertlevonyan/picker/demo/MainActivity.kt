@@ -22,7 +22,13 @@ class MainActivity : AppCompatActivity() {
         setTitle(R.string.app_name)
         setTitleTextBold(true)
         setTitleTextSize(22f)
-        setItems(setOf(ItemModel(ItemType.ITEM_CAMERA), ItemModel(ItemType.ITEM_GALLERY), ItemModel(ItemType.ITEM_VIDEO), ItemModel(ItemType.ITEM_VIDEO_GALLERY), ItemModel(ItemType.ITEM_FILES)))
+        setItems(setOf(
+            ItemModel(ItemType.ITEM_CAMERA),
+            ItemModel(ItemType.ITEM_GALLERY),
+            ItemModel(ItemType.ITEM_VIDEO),
+            ItemModel(ItemType.ITEM_VIDEO_GALLERY),
+            ItemModel(ItemType.ITEM_FILES))
+        )
         setListType(PickerDialog.ListType.TYPE_GRID)
       }.setPickerCloseListener { type, uris ->
         val ivPreview = findViewById<ImageView>(R.id.ivPreview)

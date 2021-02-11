@@ -14,11 +14,15 @@ internal class FilePickerContract : ActivityResultContract<Unit, List<Uri>>() {
     emptyList()
   } else {
     val uris = mutableListOf<Uri>()
-    intent.clipData?.let { clipData ->
-      for (i in 0 until clipData.itemCount) {
-        uris.add(clipData.getItemAt(i).uri)
-      }
-    }
+    intent.data
+        ?.let {
+          uris.add(it)
+        }
+        ?: intent.clipData?.let { clipData ->
+          for (i in 0 until clipData.itemCount) {
+            uris.add(clipData.getItemAt(i).uri)
+          }
+        }
     uris
   }
 }

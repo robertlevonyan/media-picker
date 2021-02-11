@@ -1,6 +1,6 @@
 apply plugin: 'com.jfrog.bintray'
 
-version = '2.0.0'
+version = '2.0.1'
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -12,7 +12,7 @@ artifacts {
 }
 
 Properties properties = new Properties()
-properties.load( new FileInputStream("local.properties"))
+properties.load( new FileInputStream(project.rootProject.file('local.properties')))
 
 // Bintray
 bintray {

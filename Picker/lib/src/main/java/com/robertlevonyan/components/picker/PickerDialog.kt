@@ -146,7 +146,7 @@ class PickerDialog internal constructor(): BottomSheetDialogFragment() {
             onPickerCloseListener?.onPickerClosed(ItemType.ITEM_FILES, uris)
             dismissAllowingStateLoss()
         } else {
-            Log.e(TAG, "Cannot access video from gallery")
+            Log.e(TAG, "Cannot get this file")
         }
     }
 
