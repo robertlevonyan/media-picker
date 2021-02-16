@@ -29,7 +29,7 @@ internal class ItemAdapter(private val listType: PickerDialog.ListType, private 
         protected fun initIconBackground(item: ItemModel, icon: ImageView) {
             if (item.hasBackground) {
                 val color = if (item.itemBackgroundColor == 0)
-                    ContextCompat.getColor(icon.context, R.color.colorAccent)
+                    ContextCompat.getColor(icon.context, R.color.colorYellow)
                 else item.itemBackgroundColor
 
                 val (bg, colorFilter) = when (item.backgroundType) {

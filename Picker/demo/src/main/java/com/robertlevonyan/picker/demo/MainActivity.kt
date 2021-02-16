@@ -1,16 +1,14 @@
 package com.robertlevonyan.picker.demo
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import coil.fetch.VideoFrameUriFetcher
 import coil.load
-import com.robertlevonyan.components.picker.ItemModel
-import com.robertlevonyan.components.picker.ItemType
-import com.robertlevonyan.components.picker.PickerDialog
-import com.robertlevonyan.components.picker.pickerDialog
+import com.robertlevonyan.components.picker.*
 
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         setTitleTextBold(true)
         setTitleTextSize(22f)
         setItems(setOf(
-            ItemModel(ItemType.ITEM_CAMERA),
+            ItemModel(ItemType.ITEM_CAMERA, backgroundType = ShapeType.TYPE_SQUARE, itemBackgroundColor = Color.RED),
             ItemModel(ItemType.ITEM_GALLERY),
             ItemModel(ItemType.ITEM_VIDEO),
             ItemModel(ItemType.ITEM_VIDEO_GALLERY),

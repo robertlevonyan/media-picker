@@ -306,7 +306,7 @@ class PickerDialog internal constructor(): BottomSheetDialogFragment() {
 
         context?.let { context ->
             binding.tvTitle.setTextColor(
-                if (dialogTitleColor == 0) ContextCompat.getColor(context, R.color.colorDark)
+                if (dialogTitleColor == 0) ContextCompat.getColor(context, R.color.colorHighlight)
                 else dialogTitleColor
             )
         }
