@@ -81,6 +81,10 @@ And the result is
 
 ## Versions
 
+#### 2.0.1 - 2.0.2
+
+Refactoring and some UI changes
+
 ### 2.0.0
 
 New version of library.
