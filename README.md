@@ -3,9 +3,17 @@
 |Easy customizable picker for all your needs in Android application|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker.png"  width="400" />|
 |----------------------------------------------------------------------------------------------|-----------|
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universal%20Media%20Picker-yellow.svg?style=flat-square)](https://android-arsenal.com/details/1/6862)[![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat-square)](https://android-arsenal.com/api?level=14)[ ![Download](https://api.bintray.com/packages/robertlevonyan/maven/Picker/images/download.svg) ](https://bintray.com/robertlevonyan/maven/Picker/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universal%20Media%20Picker-yellow.svg?style=flat-square)](https://android-arsenal.com/details/1/6862) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat-square)](https://android-arsenal.com/api?level=14) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker)
 
 ## Setup
+
+Add following line of code to your project level gradle file
+
+```kotlin
+  repositories {
+    mavenCentral()
+  }
+```
 
 #### Gradle:
 
@@ -13,6 +21,12 @@ Add following line of code to your module(app) level gradle file
 
 ```groovy
     implementation 'com.robertlevonyan.components:Picker:<LATEST_VERSION>'
+```
+
+#### Kotlin:
+
+```kotlin
+    implementation("com.robertlevonyan.components:Picker:$LATEST_VERSION")
 ```
 
 #### Maven:
@@ -80,6 +94,10 @@ And the result is
 |<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_grid.jpg"  width="500" />|
 
 ## Versions
+
+#### 2.1.0
+
+Migration to mavenCentral
 
 #### 2.0.1 - 2.0.2
 
