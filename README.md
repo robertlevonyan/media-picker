@@ -95,7 +95,11 @@ And the result is
 
 ## Versions
 
-#### 2.1.0
+#### 2.1.1
+
+Single picker issue fixed
+
+### 2.1.0
 
 Migration to mavenCentral
 

@@ -14,6 +14,7 @@ internal class VideoGalleryContract : ActivityResultContract<Unit, List<Uri>>() 
     emptyList()
   } else {
     val uris = mutableListOf<Uri>()
+    intent.data?.let(uris::add)
     intent.clipData?.let { clipData ->
       for (i in 0 until clipData.itemCount) {
         uris.add(clipData.getItemAt(i).uri)

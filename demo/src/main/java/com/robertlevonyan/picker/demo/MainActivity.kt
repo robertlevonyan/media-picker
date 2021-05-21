@@ -20,12 +20,14 @@ class MainActivity : AppCompatActivity() {
         setTitle(R.string.app_name)
         setTitleTextBold(true)
         setTitleTextSize(22f)
-        setItems(setOf(
+        setItems(
+          setOf(
             ItemModel(ItemType.ITEM_CAMERA, backgroundType = ShapeType.TYPE_SQUARE, itemBackgroundColor = Color.RED),
             ItemModel(ItemType.ITEM_GALLERY),
             ItemModel(ItemType.ITEM_VIDEO),
             ItemModel(ItemType.ITEM_VIDEO_GALLERY),
-            ItemModel(ItemType.ITEM_FILES))
+            ItemModel(ItemType.ITEM_FILES)
+          )
         )
         setListType(PickerDialog.ListType.TYPE_GRID)
       }.setPickerCloseListener { type, uris ->
@@ -42,11 +44,11 @@ class MainActivity : AppCompatActivity() {
             }
             ivPreview.setOnClickListener {
               Intent(Intent.ACTION_VIEW)
-                  .apply {
-                    setDataAndType(uris.first(), "video/mp4")
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                  }
-                  .let { startActivity(it) }
+                .apply {
+                  setDataAndType(uris.first(), "video/mp4")
+                  addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                .let { startActivity(it) }
             }
           }
           ItemType.ITEM_VIDEO_GALLERY -> {
@@ -56,11 +58,11 @@ class MainActivity : AppCompatActivity() {
             }
             ivPreview.setOnClickListener {
               Intent(Intent.ACTION_VIEW)
-                  .apply {
-                    setDataAndType(uris.first(), "video/mp4")
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                  }
-                  .let { startActivity(it) }
+                .apply {
+                  setDataAndType(uris.first(), "video/mp4")
+                  addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                .let { startActivity(it) }
             }
           }
           ItemType.ITEM_FILES -> println(uris.toTypedArray().contentToString())
