@@ -95,6 +95,10 @@ And the result is
 
 ## Versions
 
+### 2.1.2
+
+SDK 31 ready
+
 #### 2.1.1
 
 Single picker issue fixed
