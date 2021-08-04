@@ -95,9 +95,11 @@ And the result is
 
 ## Versions
 
-### 2.1.2
+### 2.1.2 - 2.1.5
 
+Update to Java 11
 SDK 31 ready
+Minor updates
 
 #### 2.1.1
 

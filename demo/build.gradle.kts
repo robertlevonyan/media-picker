@@ -40,5 +40,5 @@ dependencies {
   implementation("io.coil-kt:coil:1.3.0")
   implementation("io.coil-kt:coil-video:1.1.1")
 //  implementation(project(mapOf("path" to ":lib")))
-  implementation("com.robertlevonyan.components:Picker:2.1.3")
+  implementation("com.robertlevonyan.components:Picker:2.1.5")
 }
