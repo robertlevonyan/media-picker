@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-  compileSdk = 31
+  compileSdk = 32
   defaultConfig {
     minSdk = 19
-    targetSdk = 31
+    targetSdk = 32
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
   }
@@ -19,19 +19,18 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
-  lintOptions {
-    isAbortOnError = false
-  }
   buildFeatures {
     viewBinding = true
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
   kotlinOptions {
-    jvmTarget = "1.8"
-    languageVersion = "1.4"
+    jvmTarget = "11"
+  }
+  lint {
+    abortOnError = false
   }
 }
 
@@ -45,9 +44,9 @@ allprojects {
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("androidx.appcompat:appcompat:1.3.1")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.0")
-  implementation("com.google.android.material:material:1.4.0")
-  implementation("androidx.core:core-ktx:1.7.0-beta01")
-  api("androidx.fragment:fragment-ktx:1.3.6")
+  implementation("androidx.appcompat:appcompat:1.4.1")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+  implementation("com.google.android.material:material:1.5.0")
+  implementation("androidx.core:core-ktx:1.8.0-alpha04")
+  api("androidx.fragment:fragment-ktx:1.4.1")
 }
