@@ -1,4 +1,4 @@
-# <img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/logo.png"  width="25" height="25" /> &nbsp;&nbsp;&nbsp; Universal Media Picker
+# <img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/logo.png"  width="25" height="25" /> &nbsp;&nbsp;&nbsp; Universal Media Picker
 
 |Easy customizable picker for all your needs in Android application|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker.png"  width="400" />|
 |----------------------------------------------------------------------------------------------|-----------|
@@ -91,7 +91,7 @@ And the result is
 
 |List picker                                            |Grid picker                                                |
 |-------------------------------------------------------|-----------------------------------------------------------|
-|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker_grid.jpg"  width="500" />|
+|<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/picker_grid.jpg"  width="500" />|
 
 ## Versions
 
@@ -137,6 +137,11 @@ First version of library
 
 Special thanks to @chimzycash for createing an amazing logo for this project ☺️
 
+<a href="https://www.buymeacoffee.com/robertlevonyan">
+  <img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/coffee.jpeg"  width="300" />
+</a>
+
+
 ## Licence
 
 ```
@@ -157,4 +162,4 @@ Special thanks to @chimzycash for createing an amazing logo for this project ☺
     limitations under the License.
 ```
 
-<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/logo_title.png"/>
+<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/logo_title.png"/>
