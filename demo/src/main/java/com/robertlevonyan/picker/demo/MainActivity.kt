@@ -18,12 +18,11 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
 import com.robertlevonyan.compose.picker.*
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-  @OptIn(ExperimentalMaterialApi::class)
+  @OptIn(ExperimentalMaterialApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -95,7 +94,7 @@ class MainActivity : AppCompatActivity() {
       PickerDialog(
         dialogTitle = stringResource(id = R.string.app_name),
         dialogTitleSize = 22.sp,
-        dialogListType = ListType.TYPE_LIST,
+        dialogListType = ListType.TYPE_GRID,
         dialogGridSpan = 3,
         dialogItems = setOf(
           ItemModel(ItemType.ITEM_CAMERA, backgroundType = ShapeType.TYPE_ROUNDED_SQUARE, itemBackgroundColor = Color.Red),

@@ -6,42 +6,31 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import com.google.accompanist.insets.navigationBarsPadding
 import com.robertlevonyan.compose.picker.Dimens.FAB_MARGIN
-import com.robertlevonyan.compose.picker.Dimens.HALF_MARGIN
-import com.robertlevonyan.compose.picker.Dimens.LIST_ICON_SIZE
-import com.robertlevonyan.compose.picker.Dimens.RADIUS_SIZE
 import com.robertlevonyan.compose.picker.Dimens.TITLE_TEXT_SIZE
+import com.robertlevonyan.compose.picker.components.PickerGridItem
+import com.robertlevonyan.compose.picker.components.PickerListItem
 import kotlinx.coroutines.launch
 
 private val uris = mutableListOf<Uri>()
+private val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+private val permissionsWithCamera = permissions + Manifest.permission.CAMERA
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun PickerDialog(
@@ -52,8 +41,8 @@ fun PickerDialog(
   dialogListType: ListType = ListType.TYPE_LIST, // picker items list or grid
   dialogGridSpan: Int = 2, // if dialogListType is set to ListType.TYPE_GRID, span count
   dialogItems: Set<ItemModel> = emptySet(), // items which should be on the picker list
-  onItemSelected: (uris: List<Uri>) -> Unit,
-  content: @Composable (ModalBottomSheetState) -> Unit,
+  onItemSelected: (uris: List<Uri>) -> Unit, // invoked after an action of any item
+  content: @Composable (ModalBottomSheetState) -> Unit, // content which will trigger the dialog visibility
 ) {
   val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden) {
     true
@@ -112,6 +101,7 @@ private fun CreateTitle(
   }
 }
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 private fun CreateList(
@@ -130,6 +120,7 @@ private fun CreateList(
     ListType.TYPE_GRID -> CreateGrid(
       dialogGridSpan = dialogGridSpan,
       dialogItems = dialogItems,
+      bottomSheetState = bottomSheetState,
       onItemSelected = onItemSelected,
     )
   }
@@ -170,10 +161,6 @@ private fun CreateColumn(
       .wrapContentHeight()
       .navigationBarsPadding(),
   ) {
-    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    val permissionsWithCamera =
-      arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
     items(count = dialogItems.size) { index ->
       PickerListItem(item = dialogItems.elementAt(index)) { itemModel ->
         when (itemModel.type) {
@@ -191,80 +178,37 @@ private fun CreateColumn(
   }
 }
 
-@Composable
-private fun PickerListItem(
-  item: ItemModel,
-  onItemClick: (ItemModel) -> Unit,
-) {
-  Row(
-    modifier = Modifier
-      .fillMaxWidth()
-      .clickable(
-        interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(bounded = true),
-        onClick = { onItemClick.invoke(item) },
-      )
-      .padding(all = HALF_MARGIN)
-      .height(height = LIST_ICON_SIZE),
-  ) {
-    val backgroundShape = when (item.backgroundType) {
-      ShapeType.TYPE_CIRCLE -> CircleShape
-      ShapeType.TYPE_SQUARE -> RectangleShape
-      ShapeType.TYPE_ROUNDED_SQUARE -> RoundedCornerShape(size = RADIUS_SIZE)
-    }
-
-    val itemIcon = if (item.itemIcon == 0) {
-      when (item.type) {
-        ItemType.ITEM_CAMERA -> R.drawable.ic_camera
-        ItemType.ITEM_GALLERY -> R.drawable.ic_image
-        ItemType.ITEM_VIDEO -> R.drawable.ic_videocam
-        ItemType.ITEM_VIDEO_GALLERY -> R.drawable.ic_video_library
-        ItemType.ITEM_FILES -> R.drawable.ic_file
-      }
-    } else {
-      item.itemIcon
-    }
-
-    val itemText = item.itemLabel.ifEmpty {
-      val itemLabelId = when (item.type) {
-        ItemType.ITEM_CAMERA -> R.string.photo
-        ItemType.ITEM_GALLERY -> R.string.gallery
-        ItemType.ITEM_VIDEO -> R.string.video
-        ItemType.ITEM_VIDEO_GALLERY -> R.string.vgallery
-        ItemType.ITEM_FILES -> R.string.file
-      }
-      stringResource(id = itemLabelId)
-    }
-
-    Image(
-      painter = painterResource(id = itemIcon),
-      colorFilter = ColorFilter.tint(color = item.itemIconColor),
-      modifier = Modifier
-        .size(LIST_ICON_SIZE)
-        .background(color = item.itemBackgroundColor, shape = backgroundShape),
-      contentScale = ContentScale.Inside,
-      contentDescription = null,
-    )
-
-    Text(
-      text = itemText,
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = HALF_MARGIN)
-        .wrapContentHeight()
-        .align(alignment = Alignment.CenterVertically),
-      color = item.itemTextColor,
-    )
-  }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
+@ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 private fun CreateGrid(
   dialogGridSpan: Int,
   dialogItems: Set<ItemModel> = emptySet(),
+  bottomSheetState: ModalBottomSheetState,
   onItemSelected: (uris: List<Uri>) -> Unit,
 ) {
+  val context = LocalContext.current
+
+  val cameraPhotoUri = getCameraPhotoUri(context = context)
+  val cameraVideoUri = getCameraVideoUri(context = context)
+
+  val takePicture = ActivityResultRequests.takePicture { onItemSelected(listOf(cameraPhotoUri)) }
+  val cameraPermissionRequest = ActivityResultRequests.requestPermissions { takePicture.launch(cameraPhotoUri) }
+
+  val openPhotoGallery = ActivityResultRequests.openPhotoGallery { uris -> onItemSelected(uris) }
+  val photoGalleryPermissionRequest = ActivityResultRequests.requestPermissions { openPhotoGallery.launch(Unit) }
+
+  val recordVideo = ActivityResultRequests.recordVideo { onItemSelected(listOf(cameraVideoUri)) }
+  val videoPermissionRequest = ActivityResultRequests.requestPermissions { recordVideo.launch(cameraVideoUri) }
+
+  val openVideoGallery = ActivityResultRequests.openVideoGallery { uris -> onItemSelected(uris) }
+  val videoGalleryPermissionRequest = ActivityResultRequests.requestPermissions { openVideoGallery.launch(Unit) }
+
+  val openFilePicker = ActivityResultRequests.openFilePicker { uris -> onItemSelected(uris) }
+  val filePickerPermissionRequest = ActivityResultRequests.requestPermissions { openFilePicker.launch(Unit) }
+
+  val coroutine = rememberCoroutineScope()
+
   LazyVerticalGrid(
     modifier = Modifier
       .fillMaxWidth()
@@ -272,8 +216,19 @@ private fun CreateGrid(
       .navigationBarsPadding(),
     cells = GridCells.Fixed(count = dialogGridSpan),
   ) {
-    items(count = dialogItems.size) {
-
+    items(items = dialogItems.toList()) { item ->
+      PickerGridItem(item = item) { itemModel ->
+        when (itemModel.type) {
+          ItemType.ITEM_CAMERA -> cameraPermissionRequest.launch(permissionsWithCamera)
+          ItemType.ITEM_GALLERY -> photoGalleryPermissionRequest.launch(permissions)
+          ItemType.ITEM_VIDEO -> videoPermissionRequest.launch(permissionsWithCamera)
+          ItemType.ITEM_VIDEO_GALLERY -> videoGalleryPermissionRequest.launch(permissions)
+          ItemType.ITEM_FILES -> filePickerPermissionRequest.launch(permissions)
+        }
+        coroutine.launch {
+          bottomSheetState.hide()
+        }
+      }
     }
   }
 }
