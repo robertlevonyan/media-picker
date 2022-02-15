@@ -3,7 +3,10 @@
 |Easy customizable picker for all your needs in Android application|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker.png"  width="400" />|
 |----------------------------------------------------------------------------------------------|-----------|
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universal%20Media%20Picker-yellow.svg?style=flat-square)](https://android-arsenal.com/details/1/6862) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat-square)](https://android-arsenal.com/api?level=14) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker)
+|Android Arsenal|[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universal%20Media%20Picker-yellow.svg?style=flat-square)](https://android-arsenal.com/details/1/6862) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat-square)](https://android-arsenal.com/api?level=14)|
+|--------------------|--------------------|
+|PickerDialogVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker)|
+|PickerComposeVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/picker-compose/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/picker-compose)|
 
 ## Setup
 
@@ -20,13 +23,13 @@ Add following line of code to your project level gradle file
 Add following line of code to your module(app) level gradle file
 
 ```groovy
-    implementation 'com.robertlevonyan.components:Picker:<LATEST_VERSION>'
+    implementation 'com.robertlevonyan.components:Picker:<PickerDialogVersion>'
 ```
 
 #### Kotlin:
 
 ```kotlin
-    implementation("com.robertlevonyan.components:Picker:$LATEST_VERSION")
+    implementation("com.robertlevonyan.components:Picker:$PickerDialogVersion")
 ```
 
 #### Maven:
@@ -35,9 +38,15 @@ Add following line of code to your module(app) level gradle file
   <dependency>
     <groupId>com.robertlevonyan.components</groupId>
     <artifactId>Picker</artifactId>
-    <version>LATEST_VERSION</version>
+    <version>PickerDialogVersion</version>
     <type>pom</type>
   </dependency>
+```
+
+### For Jetpack Compose version
+
+```kotlin
+    implementation("com.robertlevonyan.components:picker-compose:$PickerComposeVersion")
 ```
 
 ## Usage
@@ -87,11 +96,51 @@ Creating items
                     )
 ```
 
+### For Jetpack Compose version
+
+```kotlin
+setContent {
+ val coroutine = rememberCoroutineScope()
+
+ PickerDialog(
+   dialogTitle = stringResource(id = R.string.app_name),
+   dialogTitleSize = 22.sp,
+   dialogListType = ListType.TYPE_GRID,
+   dialogGridSpan = 3,
+   dialogItems = setOf(
+     ItemModel(ItemType.ITEM_CAMERA, backgroundType = ShapeType.TYPE_ROUNDED_SQUARE, itemBackgroundColor = Color.Red),
+     ItemModel(ItemType.ITEM_GALLERY),
+     ItemModel(ItemType.ITEM_VIDEO),
+     ItemModel(ItemType.ITEM_VIDEO_GALLERY),
+     ItemModel(ItemType.ITEM_FILES)
+   ),
+   onItemSelected = { selectedUris ->
+    // get uris
+   }
+ ) { bottomSheetState ->
+   Column {
+     Button(onClick = {
+       coroutine.launch {
+         if (bottomSheetState.isVisible) {
+           bottomSheetState.hide()
+         } else {
+           bottomSheetState.show()
+         }
+       }
+     }) {
+       Text(text = "Open picker")
+     }
+   }
+ }
+}
+```
+
 And the result is
 
 |List picker                                            |Grid picker                                                |
 |-------------------------------------------------------|-----------------------------------------------------------|
 |<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/picker_grid.jpg"  width="500" />|
+
 
 ## Versions
 
@@ -126,6 +175,12 @@ Refactoring and some UI changes
 
 First version of library
 
+## Compose versions
+
+### 1.0.0
+
+First version of library
+
 ## Contact
 
 - **Email**: me@robertlevonyan.com
@@ -146,7 +201,7 @@ Special thanks to @chimzycash for createing an amazing logo for this project ☺
 
 ```
     Universal Media Picker©
-    Copyright 2018 Robert Levonyan
+    Copyright 2021 Robert Levonyan
     Url: https://github.com/robertlevonyan/MediaPicker
 
     Licensed under the Apache License, Version 2.0 (the "License");
