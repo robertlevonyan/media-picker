@@ -6,7 +6,7 @@
 |Android Arsenal|[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universal%20Media%20Picker-yellow.svg?style=flat-square)](https://android-arsenal.com/details/1/6862) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat-square)](https://android-arsenal.com/api?level=14)|
 |--------------------|--------------------|
 |PickerDialogVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker)|
-|PickerComposeVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/picker-compose/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/picker-compose)|
+|PickerComposeVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.compose/picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.compose/picker)|
 
 ## Setup
 
@@ -46,7 +46,7 @@ Add following line of code to your module(app) level gradle file
 ### For Jetpack Compose version
 
 ```kotlin
-    implementation("com.robertlevonyan.components:picker-compose:$PickerComposeVersion")
+    implementation("com.robertlevonyan.compose:picker:$PickerComposeVersion")
 ```
 
 ## Usage
