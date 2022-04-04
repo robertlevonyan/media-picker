@@ -1,5 +1,10 @@
 package com.robertlevonyan.compose.picker
 
-enum class ItemType {
-    ITEM_CAMERA, ITEM_GALLERY, ITEM_VIDEO, ITEM_VIDEO_GALLERY, ITEM_FILES
+sealed class ItemType {
+  object Camera : ItemType()
+  object Video : ItemType()
+  class ImageGallery(vararg val mimeTypes: MimeType.Image) : ItemType()
+  class VideoGallery(vararg val mimeTypes: MimeType.Video) : ItemType()
+  class AudioGallery(vararg val mimeTypes: MimeType.Audio) : ItemType()
+  class Files(vararg val mimeTypes: MimeType) : ItemType()
 }

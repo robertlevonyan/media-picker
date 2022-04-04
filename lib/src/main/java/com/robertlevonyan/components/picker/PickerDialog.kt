@@ -19,9 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.robertlevonyan.components.picker.contracts.FilePickerContract
-import com.robertlevonyan.components.picker.contracts.PhotoGalleryContract
 import com.robertlevonyan.components.picker.contracts.RecordVideoContract
-import com.robertlevonyan.components.picker.contracts.VideoGalleryContract
 import com.robertlevonyan.components.picker.databinding.DialogPickerBinding
 
 class PickerDialog internal constructor() : BottomSheetDialogFragment() {
@@ -41,7 +39,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
   private var dialogItems = emptyList<ItemModel>() // items which should be on the picker list
 
   /**
-   * Contracts for camera picker
+   * Contracts for photo camera
    *
    * @param cameraPermissionRequest will request permissions and open the camera if the permissions are granted
    * @param takePictureResultContract will request the system camera and return the taken photo
@@ -57,7 +55,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
   }
   private val takePictureResultContract = registerForActivityResult(ActivityResultContracts.TakePicture()) {
     if (it) {
-      onPickerCloseListener?.onPickerClosed(ItemType.ITEM_CAMERA, uris)
+      onPickerCloseListener?.onPickerClosed(ItemType.Camera, uris)
       dismissAllowingStateLoss()
     } else {
       Log.e(TAG, "Camera failed to capture photo")
@@ -65,31 +63,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
   }
 
   /**
-   * Contracts for camera picker
-   *
-   * @param photoGalleryPermissionRequest will request permissions and open the gallery of photos if the permissions are granted
-   * @param photoGalleryResultContract will request the system picker with photos and return a list of uris
-   * */
-  private val photoGalleryPermissionRequest = registerForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions()
-  ) { permissionsMap ->
-    if (permissionsMap.all { it.value }) {
-      openPhotoGallery()
-    } else {
-      Log.e(TAG, "Cannot access gallery")
-    }
-  }
-  private val photoGalleryResultContract = registerForActivityResult(PhotoGalleryContract()) { uris ->
-    if (uris.isNotEmpty()) {
-      onPickerCloseListener?.onPickerClosed(ItemType.ITEM_GALLERY, uris)
-      dismissAllowingStateLoss()
-    } else {
-      Log.e(TAG, "Cannot access image from gallery")
-    }
-  }
-
-  /**
-   * Contracts for camera picker
+   * Contracts for video recorder
    *
    * @param videoPermissionRequest will request permissions and open the camera if the permissions are granted
    * @param videoResultContract will request the system camera and return the taken video
@@ -105,7 +79,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
   }
   private val videoResultContract = registerForActivityResult(RecordVideoContract()) {
     if (it) {
-      onPickerCloseListener?.onPickerClosed(ItemType.ITEM_VIDEO, uris)
+      onPickerCloseListener?.onPickerClosed(ItemType.Video, uris)
       dismissAllowingStateLoss()
     } else {
       Log.e(TAG, "Camera failed to record video")
@@ -113,23 +87,49 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
   }
 
   /**
-   * Contracts for camera picker
+   * Contracts for image picker
    *
-   * @param videoGalleryPermissionRequest will request permissions and open the gallery of videos if the permissions are granted
-   * @param videoGalleryResultContract will request the system picker with videos and return a list of uris
+   * @param imageInputTypes input mime types
+   * @param imageGalleryPermissionRequest will request permissions and open the gallery of photos if the permissions are granted
+   * @param imageGalleryResultContract will request the system picker with photos and return a list of uris
    * */
-  private val videoGalleryPermissionRequest = registerForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions()
-  ) { permissionsMap ->
-    if (permissionsMap.all { it.value }) {
-      openVideoGallery()
+  private var imageInputTypes = listOf(MimeType.Image.All)
+  private val imageGalleryPermissionRequest =
+    registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsMap ->
+      if (permissionsMap.all { it.value }) {
+        openImageGallery(imageInputTypes)
+      } else {
+        Log.e(TAG, "Cannot access gallery")
+      }
+    }
+  private val imageGalleryResultContract = registerForActivityResult(FilePickerContract()) { uris ->
+    if (uris.isNotEmpty()) {
+      onPickerCloseListener?.onPickerClosed(ItemType.ImageGallery(), uris)
+      dismissAllowingStateLoss()
     } else {
-      Log.e(TAG, "Cannot access gallery")
+      Log.e(TAG, "Cannot access image from gallery")
     }
   }
-  private val videoGalleryResultContract = registerForActivityResult(VideoGalleryContract()) { uris ->
+
+  /**
+   * Contracts for audio picker
+   *
+   * @param audioInputTypes input mime types
+   * @param audioGalleryPermissionRequest will request permissions and open the gallery of audio if the permissions are granted
+   * @param audioGalleryResultContract will request the system picker with audios and return a list of uris
+   * */
+  private var audioInputTypes = listOf(MimeType.Audio.All)
+  private val audioGalleryPermissionRequest =
+    registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsMap ->
+      if (permissionsMap.all { it.value }) {
+        openAudioGallery(audioInputTypes)
+      } else {
+        Log.e(TAG, "Cannot access gallery")
+      }
+    }
+  private val audioGalleryResultContract = registerForActivityResult(FilePickerContract()) { uris ->
     if (uris.isNotEmpty()) {
-      onPickerCloseListener?.onPickerClosed(ItemType.ITEM_VIDEO_GALLERY, uris)
+      onPickerCloseListener?.onPickerClosed(ItemType.AudioGallery(), uris)
       dismissAllowingStateLoss()
     } else {
       Log.e(TAG, "Cannot access video from gallery")
@@ -137,23 +137,49 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
   }
 
   /**
-   * Contracts for camera picker
+   * Contracts for video picker
    *
+   * @param videoInputTypes input mime types
+   * @param videoGalleryPermissionRequest will request permissions and open the gallery of videos if the permissions are granted
+   * @param videoGalleryResultContract will request the system picker with videos and return a list of uris
+   * */
+  private var videoInputTypes = listOf(MimeType.Video.All)
+  private val videoGalleryPermissionRequest =
+    registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsMap ->
+      if (permissionsMap.all { it.value }) {
+        openVideoGallery(videoInputTypes)
+      } else {
+        Log.e(TAG, "Cannot access gallery")
+      }
+    }
+  private val videoGalleryResultContract = registerForActivityResult(FilePickerContract()) { uris ->
+    if (uris.isNotEmpty()) {
+      onPickerCloseListener?.onPickerClosed(ItemType.VideoGallery(), uris)
+      dismissAllowingStateLoss()
+    } else {
+      Log.e(TAG, "Cannot access video from gallery")
+    }
+  }
+
+  /**
+   * Contracts for file picker
+   *
+   * @param fileInputTypes input mime types
    * @param filePickerPermissionRequest will request permissions and open the gallery of files if the permissions are granted
    * @param filePickerResultContract will request the system picker with files and return a list of uris
    * */
-  private val filePickerPermissionRequest = registerForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions()
-  ) { permissionsMap ->
-    if (permissionsMap.all { it.value }) {
-      openFilePicker()
-    } else {
-      Log.e(TAG, "Cannot access gallery")
+  private var fileInputTypes = listOf(MimeType.Files.All)
+  private val filePickerPermissionRequest =
+    registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissionsMap ->
+      if (permissionsMap.all { it.value }) {
+        openFilePicker(fileInputTypes)
+      } else {
+        Log.e(TAG, "Cannot access gallery")
+      }
     }
-  }
   private val filePickerResultContract = registerForActivityResult(FilePickerContract()) { uris ->
     if (uris.isNotEmpty()) {
-      onPickerCloseListener?.onPickerClosed(ItemType.ITEM_FILES, uris)
+      onPickerCloseListener?.onPickerClosed(ItemType.Files(), uris)
       dismissAllowingStateLoss()
     } else {
       Log.e(TAG, "Cannot get this file")
@@ -323,6 +349,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
     }
   }
 
+  @Suppress("UNCHECKED_CAST")
   private fun createList() {
     val manager = when (dialogListType) {
       ListType.TYPE_LIST -> LinearLayoutManager(context)
@@ -334,11 +361,25 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
 
     val adapter = ItemAdapter(dialogListType) { item ->
       when (item.type) {
-        ItemType.ITEM_CAMERA -> cameraPermissionRequest.launch(permissionsWithCamera)
-        ItemType.ITEM_GALLERY -> photoGalleryPermissionRequest.launch(permissions)
-        ItemType.ITEM_VIDEO -> videoPermissionRequest.launch(permissionsWithCamera)
-        ItemType.ITEM_VIDEO_GALLERY -> videoGalleryPermissionRequest.launch(permissions)
-        ItemType.ITEM_FILES -> filePickerPermissionRequest.launch(permissions)
+        ItemType.Camera -> cameraPermissionRequest.launch(permissionsWithCamera)
+        ItemType.Video -> videoPermissionRequest.launch(permissionsWithCamera)
+        is ItemType.ImageGallery -> {
+          imageInputTypes = item.type.mimeTypes.toList() as List<MimeType.Image.All>
+          imageGalleryPermissionRequest.launch(permissions)
+        }
+        is ItemType.AudioGallery -> {
+          audioInputTypes = item.type.mimeTypes.toList() as List<MimeType.Audio.All>
+          audioGalleryPermissionRequest.launch(permissions)
+        }
+        is ItemType.VideoGallery -> {
+          videoInputTypes = item.type.mimeTypes.toList() as List<MimeType.Video.All>
+          videoGalleryPermissionRequest.launch(permissions)
+        }
+        is ItemType.Files -> {
+          fileInputTypes = item.type.mimeTypes.toList() as List<MimeType.Files.All>
+          filePickerPermissionRequest.launch(permissions)
+        }
+
       }
     }
     binding.rvItems.adapter = adapter.apply { submitList(dialogItems) }
@@ -358,10 +399,6 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
     takePictureResultContract.launch(uri)
   }
 
-  private fun openPhotoGallery() {
-    photoGalleryResultContract.launch(Unit)
-  }
-
   private fun openVideoCamera() {
     val ctx = context ?: return
     val fileName = "${System.currentTimeMillis()}.mp4"
@@ -375,12 +412,24 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
     videoResultContract.launch(uri)
   }
 
-  private fun openVideoGallery() {
-    videoGalleryResultContract.launch(Unit)
+  private fun openImageGallery(inputTypes: List<MimeType.Image>) {
+    val types = inputTypes.ifEmpty { listOf(MimeType.Image.All) }
+    imageGalleryResultContract.launch(types.map { it.type })
   }
 
-  private fun openFilePicker() {
-    filePickerResultContract.launch(Unit)
+  private fun openAudioGallery(inputTypes: List<MimeType.Audio>) {
+    val types = inputTypes.ifEmpty { listOf(MimeType.Audio.All) }
+    audioGalleryResultContract.launch(types.map { it.type })
+  }
+
+  private fun openVideoGallery(inputTypes: List<MimeType.Video>) {
+    val types = inputTypes.ifEmpty { listOf(MimeType.Video.All) }
+    videoGalleryResultContract.launch(types.map { it.type })
+  }
+
+  private fun openFilePicker(inputTypes: List<MimeType>) {
+    val types = inputTypes.ifEmpty { listOf(MimeType.Files.All) }
+    filePickerResultContract.launch(types.map { it.type })
   }
 
   fun setPickerCloseListener(listener: OnPickerCloseListener): PickerDialog {

@@ -6,9 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContract
 
-internal class FilePickerContract : ActivityResultContract<Unit, List<Uri>>() {
-  override fun createIntent(context: Context, input: Unit): Intent =
-    Intent(Intent.ACTION_GET_CONTENT).setType("*/*").putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+internal class FilePickerContract : ActivityResultContract<List<String>, List<Uri>>() {
+  override fun createIntent(context: Context, input: List<String>): Intent =
+    Intent(Intent.ACTION_GET_CONTENT)
+      .addCategory(Intent.CATEGORY_OPENABLE)
+      .setType("*/*")
+      .putExtra(Intent.EXTRA_MIME_TYPES, input.toTypedArray())
+      .putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
 
   override fun parseResult(resultCode: Int, intent: Intent?): List<Uri> = if (resultCode != Activity.RESULT_OK || intent == null) {
     emptyList()

@@ -6,9 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import com.robertlevonyan.compose.picker.contracts.FilePickerContract
-import com.robertlevonyan.compose.picker.contracts.PhotoGalleryContract
 import com.robertlevonyan.compose.picker.contracts.RecordVideoContract
-import com.robertlevonyan.compose.picker.contracts.VideoGalleryContract
 
 internal object ActivityResultRequests {
   @Composable
@@ -47,33 +45,7 @@ internal object ActivityResultRequests {
   }
 
   @Composable
-  fun openPhotoGallery(
-    onPickerClosed: (List<Uri>) -> Unit,
-  ) = rememberLauncherForActivityResult(
-    contract = PhotoGalleryContract()
-  ) { uris ->
-    if (uris.isNotEmpty()) {
-      onPickerClosed(uris)
-    } else {
-      Log.e("PickerDialog", "Camera failed to capture photo")
-    }
-  }
-
-  @Composable
-  fun openVideoGallery(
-    onPickerClosed: (List<Uri>) -> Unit,
-  ) = rememberLauncherForActivityResult(
-    contract = VideoGalleryContract()
-  ) { uris ->
-    if (uris.isNotEmpty()) {
-      onPickerClosed(uris)
-    } else {
-      Log.e("PickerDialog", "Camera failed to capture photo")
-    }
-  }
-
-  @Composable
-  fun openFilePicker(
+  fun openPicker(
     onPickerClosed: (List<Uri>) -> Unit,
   ) = rememberLauncherForActivityResult(
     contract = FilePickerContract()

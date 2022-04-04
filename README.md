@@ -63,11 +63,12 @@ Buildung picker
  }.setPickerCloseListener { type: ItemType, uris: List<Uri> ->
    // Getting the result
    when (type) {
-            ItemModel.ITEM_CAMERA -> /* do something with the photo you've taken */
-            ItemModel.ITEM_GALLERY -> /* do something with the images you've chosen */
-            ItemModel.ITEM_VIDEO -> /* do something with the video you've recorded */
-            ItemModel.ITEM_VIDEO_GALLERY -> /* do something with the videos you've chosen */
-            ItemModel.ITEM_FILES -> /* do something with the files you've chosen */
+            ItemType.Camera -> /* do something with the photo you've taken */
+            ItemType.Video -> /* do something with the video you've recorded */
+            is ItemType.ImageGallery -> /* do something with the images you've chosen */
+            is ItemType.AudioGallery -> /* do something with the audios you've chosen */
+            is ItemType.VideoGallery -> /* do something with the videos you've chosen */
+            is ItemType.Files -> /* do something with the files you've chosen */
         }
  }.show()
 ```
@@ -75,17 +76,18 @@ Buildung picker
 Creating items
 ```kotlin
   /*  Create a camera item, can be
-      ItemModel.ITEM_CAMERA 
-      ItemModel.ITEM_GALLERY
-      ItemModel.ITEM_VIDEO
-      ItemModel.ITEM_VIDEO_GALLERY 
-      ItemModel.ITEM_FILES 
+      ItemType.Camera
+      ItemType.Video
+      ItemType.ImageGallery
+      ItemType.AudioGallery
+      ItemType.VideoGallery
+      ItemType.Files
   */
-  val itemModel = ItemModel(ItemModel.ITEM_CAMERA)
+  val itemModel = ItemModel(ItemModel.Camera)
   
   // Some optional parameters
   val itemModel = ItemModel(
-                    ItemModel.ITEM_CAMERA,
+                    ItemModel.Camera,
                     itemLabel, // Default value is "", in this case default text value will be set
                     itemIcon,  // Default value is 0, in this case default icon will be set
                     hasBackground, // draw a shape background over the icon, default value is true
@@ -94,6 +96,47 @@ Creating items
                     itemBackgroundColor, // custom color for background shape, only works if hasBackground is true, 
                                          // default color is accent color of your app
                     )
+```
+
+Now you can set custom file types for pickers
+```kotlin
+ MimeType.Audio.All
+ MimeType.Audio.Mp3
+ MimeType.Audio.M4a
+ MimeType.Audio.Wav
+ MimeType.Audio.Amr
+ MimeType.Audio.Awb
+ MimeType.Audio.Ogg
+ MimeType.Audio.Aac
+ MimeType.Audio.Mka
+ MimeType.Audio.Midi
+ MimeType.Audio.Flac
+
+ MimeType.Video.All
+ MimeType.Video.Mpeg
+ MimeType.Video.Mp4
+ MimeType.Video.`3gp
+ MimeType.Video.Mkv
+ MimeType.Video.Webm
+ MimeType.Video.Avi
+
+ MimeType.Image.All
+ MimeType.Image.Jpeg
+ MimeType.Image.Png
+ MimeType.Image.Gif
+ MimeType.Image.Bmp
+ MimeType.Image.Webp
+
+ MimeType.Files.All
+ MimeType.Files.Txt
+ MimeType.Files.Html
+ MimeType.Files.Pdf
+ MimeType.Files.Doc
+ MimeType.Files.Xls
+ MimeType.Files.Ppt
+ MimeType.Files.Zip
+
+ MimeType.Custom() // if you can't find your desired file type you can use this one
 ```
 
 ### For Jetpack Compose version
@@ -108,11 +151,12 @@ setContent {
    dialogListType = ListType.TYPE_GRID,
    dialogGridSpan = 3,
    dialogItems = setOf(
-     ItemModel(ItemType.ITEM_CAMERA, backgroundType = ShapeType.TYPE_ROUNDED_SQUARE, itemBackgroundColor = Color.Red),
-     ItemModel(ItemType.ITEM_GALLERY),
-     ItemModel(ItemType.ITEM_VIDEO),
-     ItemModel(ItemType.ITEM_VIDEO_GALLERY),
-     ItemModel(ItemType.ITEM_FILES)
+     ItemModel(ItemType.Camera, backgroundType = ShapeType.TYPE_ROUNDED_SQUARE, itemBackgroundColor = Color.Red),
+     ItemModel(ItemType.Video),
+     ItemModel(ItemType.ImageGallery()),
+     ItemModel(ItemType.AudioGallery()),
+     ItemModel(ItemType.VideoGallery()),
+     ItemModel(ItemType.Files())
    ),
    onItemSelected = { selectedUris ->
     // get uris
@@ -141,10 +185,13 @@ And the result is
 |-------------------------------------------------------|-----------------------------------------------------------|
 |<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/picker_list.jpg"  width="500" />|<img src="https://github.com/robertlevonyan/media-picker/blob/master/Images/picker_grid.jpg"  width="500" />|
 
-
 ## Versions
 
-### 2.1.2 - 2.1.5
+### 2.2.0
+
+More customizable item types
+
+### 2.1.2 - 2.1.6
 
 Update to Java 11
 SDK 31 ready
@@ -176,6 +223,10 @@ Refactoring and some UI changes
 First version of library
 
 ## Compose versions
+
+### 1.1.0
+
+More customizable item types
 
 ### 1.0.0
 

@@ -3,6 +3,7 @@
     <string name="photo">Take Photo</string>
     <string name="gallery">Open Gallery</string>
     <string name="video">Record Video</string>
+    <string name="agallery">Choose Audio</string>
     <string name="vgallery">Choose Video</string>
     <string name="file">Select File</string>
 </resources>
