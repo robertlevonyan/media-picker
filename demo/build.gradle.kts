@@ -50,7 +50,8 @@ dependencies {
   implementation("androidx.compose.material:material:1.1.1")
   implementation("androidx.compose.ui:ui-tooling:1.1.1")
   implementation("io.coil-kt:coil-compose:1.4.0")
+  implementation("com.robertlevonyan.components:Picker:2.2.2")
 
-  implementation(project(mapOf("path" to ":lib-compose")))
-  implementation(project(mapOf("path" to ":lib")))
+//  implementation(project(mapOf("path" to ":lib-compose")))
+//  implementation(project(mapOf("path" to ":lib")))
 }
