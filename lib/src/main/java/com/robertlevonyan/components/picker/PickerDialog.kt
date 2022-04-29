@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
 
   private var dialogTitle = "" // title string
   private var dialogTitleId = 0 // title string res
+  private var dialogTitleGravity = Gravity.START // title gravity
   private var dialogTitleSize = 0F // title text size dimen
   private var dialogTitleColor = 0 // title text color
   private var dialogTitleBold = false // a flag to set title text bold or not
@@ -191,6 +193,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
 
     private const val ARG_TITLE = "title"
     private const val ARG_TITLE_ID = "titleId"
+    private const val ARG_TITLE_GRAVITY = "titleGravity"
     private const val ARG_TITLE_SIZE = "titleSize"
     private const val ARG_TITLE_COLOR = "titleColor"
     private const val ARG_TITLE_BOLD = "titleBold"
@@ -202,6 +205,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
       fragmentManager: FragmentManager,
       dialogTitle: String,
       dialogTitleId: Int,
+      dialogTitleGravity: Int,
       dialogTitleSize: Float,
       dialogTitleColor: Int,
       dialogTitleBold: Boolean,
@@ -214,6 +218,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
 
       args.putString(ARG_TITLE, dialogTitle)
       args.putInt(ARG_TITLE_ID, dialogTitleId)
+      args.putInt(ARG_TITLE_GRAVITY, dialogTitleGravity)
       args.putFloat(ARG_TITLE_SIZE, dialogTitleSize)
       args.putInt(ARG_TITLE_COLOR, dialogTitleColor)
       args.putBoolean(ARG_TITLE_BOLD, dialogTitleBold)
@@ -233,6 +238,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
     private val currentFragmentManager: FragmentManager
     private var dialogTitle = ""
     private var dialogTitleId = 0
+    private var dialogTitleGravity = Gravity.START
     private var dialogTitleSize = 0F
     private var dialogTitleColor = 0
     private var dialogTitleBold = false
@@ -255,6 +261,11 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
 
     fun setTitle(title: Int): Builder {
       dialogTitleId = title
+      return this
+    }
+
+    fun setTitleGravity(gravity: Int): Builder {
+      dialogTitleGravity = gravity
       return this
     }
 
@@ -288,6 +299,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
       currentFragmentManager,
       dialogTitle,
       dialogTitleId,
+      dialogTitleGravity,
       dialogTitleSize,
       dialogTitleColor,
       dialogTitleBold,
@@ -312,6 +324,7 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
 
     dialogTitle = args.getString(ARG_TITLE).orEmpty()
     dialogTitleId = args.getInt(ARG_TITLE_ID)
+    dialogTitleGravity = args.getInt(ARG_TITLE_GRAVITY)
     dialogTitleSize = args.getFloat(ARG_TITLE_SIZE)
     dialogTitleColor = args.getInt(ARG_TITLE_COLOR)
     dialogTitleBold = args.getBoolean(ARG_TITLE_BOLD)
@@ -332,6 +345,8 @@ class PickerDialog internal constructor() : BottomSheetDialogFragment() {
     } else {
       binding.tvTitle.text = dialogTitle
     }
+
+    binding.tvTitle.gravity = dialogTitleGravity
 
     if (dialogTitleSize != 0F) {
       binding.tvTitle.textSize = dialogTitleSize

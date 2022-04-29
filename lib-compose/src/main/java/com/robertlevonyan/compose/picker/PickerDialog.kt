@@ -14,10 +14,12 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import com.google.accompanist.insets.navigationBarsPadding
 import com.robertlevonyan.compose.picker.Dimens.FAB_MARGIN
@@ -38,6 +40,7 @@ fun PickerDialog(
   dialogTitleSize: TextUnit = TITLE_TEXT_SIZE, // title text size dimen
   dialogTitleColor: Color = Color.Black, // title text color
   dialogTitleWeight: FontWeight = FontWeight.Bold, // a flag to set title text bold or not
+  dialogTitleAlignment: TextAlign = TextAlign.Start, // choose the alignment of the title
   dialogListType: ListType = ListType.TYPE_LIST, // picker items list or grid
   dialogGridSpan: Int = 2, // if dialogListType is set to ListType.TYPE_GRID, span count
   dialogItems: Set<ItemModel> = emptySet(), // items which should be on the picker list
@@ -57,6 +60,7 @@ fun PickerDialog(
           dialogTitleSize = dialogTitleSize,
           dialogTitleColor = dialogTitleColor,
           dialogTitleWeight = dialogTitleWeight,
+          dialogTitleAlignment = dialogTitleAlignment,
         )
         CreateList(
           dialogListType = dialogListType,
@@ -76,6 +80,7 @@ private fun CreateTitle(
   dialogTitleSize: TextUnit,
   dialogTitleColor: Color,
   dialogTitleWeight: FontWeight,
+  dialogTitleAlignment: TextAlign,
 ) {
   // if the title values are not set, than hide title
   if (dialogTitle == "") {
@@ -97,6 +102,7 @@ private fun CreateTitle(
       fontSize = dialogTitleSize,
       fontWeight = dialogTitleWeight,
       maxLines = 1,
+      textAlign = dialogTitleAlignment,
     )
   }
 }
