@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-  compileSdk = 32
+  compileSdk = 33
   defaultConfig {
     minSdk = 19
-    targetSdk = 32
+    targetSdk = 33
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
   }
@@ -34,19 +34,17 @@ android {
   }
 }
 
-allprojects {
-  plugins.withId("com.vanniktech.maven.publish") {
-    mavenPublish {
-      sonatypeHost = com.vanniktech.maven.publish.SonatypeHost.S01
-    }
-  }
+mavenPublishing {
+  publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01)
+
+  signAllPublications()
 }
 
 dependencies {
   implementation(kotlin("stdlib"))
-  implementation("androidx.appcompat:appcompat:1.4.1")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-  implementation("com.google.android.material:material:1.5.0")
-  implementation("androidx.core:core-ktx:1.9.0-alpha02")
-  api("androidx.fragment:fragment-ktx:1.4.1")
+  implementation("androidx.appcompat:appcompat:1.6.1")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+  implementation("com.google.android.material:material:1.8.0")
+  implementation("androidx.core:core-ktx:1.10.0-alpha02")
+  api("androidx.fragment:fragment-ktx:1.5.5")
 }
