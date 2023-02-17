@@ -8,13 +8,13 @@ import android.provider.MediaStore
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -267,7 +267,7 @@ private fun CreateGrid(
       .fillMaxWidth()
       .wrapContentHeight()
       .navigationBarsPadding(),
-    cells = GridCells.Fixed(count = dialogGridSpan),
+    columns = GridCells.Fixed(count = dialogGridSpan),
   ) {
     items(items = dialogItems.toList()) { item ->
       PickerGridItem(item = item) { itemModel ->

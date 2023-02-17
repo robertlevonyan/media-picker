@@ -34,12 +34,6 @@ android {
   }
 }
 
-mavenPublishing {
-  publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01)
-
-  signAllPublications()
-}
-
 dependencies {
   implementation(kotlin("stdlib"))
   implementation("androidx.appcompat:appcompat:1.6.1")

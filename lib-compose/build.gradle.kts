@@ -47,12 +47,6 @@ android {
   }
 }
 
-mavenPublishing {
-  publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.S01)
-
-  signAllPublications()
-}
-
 dependencies {
   implementation("com.google.android.material:material:1.8.0")
 

@@ -8,7 +8,7 @@ import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContract
 
 internal class RecordVideoContract : ActivityResultContract<Uri, Boolean>() {
-  override fun createIntent(context: Context, input: Uri?): Intent =
+  override fun createIntent(context: Context, input: Uri): Intent =
       Intent(MediaStore.ACTION_VIDEO_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, input)
 
   override fun parseResult(resultCode: Int, intent: Intent?): Boolean = resultCode == Activity.RESULT_OK

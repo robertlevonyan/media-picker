@@ -1,39 +1,32 @@
 package com.robertlevonyan.picker.demo
 
-import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.view.Gravity
-import android.widget.Button
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import coil.fetch.VideoFrameUriFetcher
-import coil.load
-//import com.robertlevonyan.components.picker.*
 import com.robertlevonyan.compose.picker.*
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-  @OptIn(ExperimentalMaterialApi::class, androidx.compose.foundation.ExperimentalFoundationApi::class)
+  @OptIn(
+    ExperimentalMaterialApi::class,
+    androidx.compose.foundation.ExperimentalFoundationApi::class
+  )
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -120,7 +113,11 @@ class MainActivity : AppCompatActivity() {
         dialogListType = ListType.TYPE_LIST,
         dialogGridSpan = 3,
         dialogItems = setOf(
-          ItemModel(ItemType.Camera, backgroundType = ShapeType.TYPE_ROUNDED_SQUARE, itemBackgroundColor = Red),
+          ItemModel(
+            ItemType.Camera,
+            backgroundType = ShapeType.TYPE_ROUNDED_SQUARE,
+            itemBackgroundColor = Red
+          ),
           ItemModel(ItemType.Video),
           ItemModel(ItemType.ImageGallery(MimeType.Image.Png)),
           ItemModel(ItemType.VideoGallery()),
