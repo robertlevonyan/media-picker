@@ -6,11 +6,10 @@ plugins {
 }
 
 android {
-  compileSdk = 34
+  compileSdk = 35
 
   defaultConfig {
     minSdk = 21
-    targetSdk = 34
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
@@ -36,23 +35,20 @@ android {
   buildFeatures {
     compose = true
   }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.3"
-  }
   namespace = "com.robertlevonyan.compose.picker"
 }
 
 dependencies {
-  implementation("com.google.android.material:material:1.10.0")
+  implementation("com.google.android.material:material:1.12.0")
 
-  implementation("androidx.core:core-ktx:1.12.0")
-  implementation("androidx.appcompat:appcompat:1.6.1")
+  implementation("androidx.core:core-ktx:1.15.0")
+  implementation("androidx.appcompat:appcompat:1.7.0")
 
   implementation("com.google.accompanist:accompanist-insets:0.23.0")
-  implementation("androidx.activity:activity-compose:1.8.0")
-  implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-  implementation("androidx.compose.compiler:compiler:1.5.3")
-  implementation("androidx.compose.ui:ui:1.5.4")
-  implementation("androidx.compose.material:material:1.5.4")
-  implementation("androidx.compose.ui:ui-tooling:1.5.4")
+  implementation("androidx.activity:activity-compose:1.10.1")
+  implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
+  implementation("androidx.compose.compiler:compiler:1.5.15")
+  implementation("androidx.compose.ui:ui:1.7.8")
+  implementation("androidx.compose.material:material:1.7.8")
+  implementation("androidx.compose.ui:ui-tooling:1.7.8")
 }
