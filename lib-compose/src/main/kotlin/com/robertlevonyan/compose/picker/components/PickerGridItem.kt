@@ -8,36 +8,32 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material.ripple
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.currentComposer
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import com.robertlevonyan.compose.picker.*
-import com.robertlevonyan.compose.picker.Dimens
-import com.robertlevonyan.compose.picker.R
 
 @Composable
-internal fun PickerListItem(
+internal fun PickerGridItem(
   item: ItemModel,
   onItemClick: (ItemModel) -> Unit,
 ) {
-  Row(
+  Column(
     modifier = Modifier
       .fillMaxWidth()
+      .wrapContentHeight()
       .clickable(
         interactionSource = remember { MutableInteractionSource() },
-        indication = rememberRipple(bounded = true),
+        indication = ripple(bounded = true),
         onClick = { onItemClick.invoke(item) },
       )
       .padding(all = Dimens.HALF_MARGIN)
-      .height(height = Dimens.LIST_ICON_SIZE),
   ) {
     val backgroundShape = when (item.backgroundType) {
       ShapeType.TYPE_CIRCLE -> CircleShape
@@ -53,7 +49,8 @@ internal fun PickerListItem(
       colorFilter = ColorFilter.tint(color = item.itemIconColor),
       modifier = Modifier
         .size(Dimens.LIST_ICON_SIZE)
-        .background(color = item.itemBackgroundColor, shape = backgroundShape),
+        .background(color = item.itemBackgroundColor, shape = backgroundShape)
+        .align(alignment = Alignment.CenterHorizontally),
       contentScale = ContentScale.Inside,
       contentDescription = null,
     )
@@ -61,10 +58,10 @@ internal fun PickerListItem(
     Text(
       text = itemText,
       modifier = Modifier
-        .fillMaxWidth()
+        .wrapContentWidth()
+        .align(alignment = Alignment.CenterHorizontally)
         .padding(horizontal = Dimens.HALF_MARGIN)
-        .wrapContentHeight()
-        .align(alignment = Alignment.CenterVertically),
+        .wrapContentHeight(),
       color = item.itemTextColor,
     )
   }

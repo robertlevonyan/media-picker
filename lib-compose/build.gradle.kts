@@ -1,8 +1,9 @@
 plugins {
-  id("com.android.library")
-  id("org.jetbrains.kotlin.android")
-  id("kotlin-parcelize")
-  id("com.vanniktech.maven.publish")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.compose)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.parcelize)
+  alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -10,8 +11,6 @@ android {
 
   defaultConfig {
     minSdk = 21
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
 
@@ -39,16 +38,17 @@ android {
 }
 
 dependencies {
-  implementation("com.google.android.material:material:1.12.0")
-
-  implementation("androidx.core:core-ktx:1.15.0")
-  implementation("androidx.appcompat:appcompat:1.7.0")
-
+  implementation(libs.material)
+  implementation(libs.androidx.core.ktx)
+  implementation(libs.androidx.appcompat)
   implementation("com.google.accompanist:accompanist-insets:0.23.0")
-  implementation("androidx.activity:activity-compose:1.10.1")
-  implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
-  implementation("androidx.compose.compiler:compiler:1.5.15")
-  implementation("androidx.compose.ui:ui:1.7.8")
-  implementation("androidx.compose.material:material:1.7.8")
-  implementation("androidx.compose.ui:ui-tooling:1.7.8")
+  implementation(platform(libs.androidx.compose.bom))
+  implementation(libs.androidx.compose.foundation)
+  implementation(libs.androidx.compose.material3)
+  implementation(libs.androidx.activity.compose)
+//  implementation("androidx.constraintlayout:constraintlayout-compose:1.1.1")
+//  implementation("androidx.compose.compiler:compiler:1.5.15")
+  implementation(libs.androidx.compose.ui)
+//  implementation("androidx.compose.material:material:1.7.8")
+  implementation(libs.androidx.compose.ui.tooling)
 }

@@ -5,9 +5,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -23,10 +22,6 @@ import com.robertlevonyan.compose.picker.*
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-  @OptIn(
-    ExperimentalMaterialApi::class,
-    androidx.compose.foundation.ExperimentalFoundationApi::class
-  )
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)

@@ -1,16 +1,14 @@
 plugins {
-  id("com.android.library")
-  kotlin("android")
-  id("kotlin-parcelize")
-  id("com.vanniktech.maven.publish")
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.kotlin.parcelize)
+  alias(libs.plugins.maven.publish)
 }
 
 android {
   compileSdk = 35
   defaultConfig {
     minSdk = 21
-
-    testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
   }
   buildFeatures {
@@ -30,10 +28,9 @@ android {
 }
 
 dependencies {
-  implementation(kotlin("stdlib"))
-  implementation("androidx.appcompat:appcompat:1.7.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-  implementation("com.google.android.material:material:1.12.0")
-  implementation("androidx.core:core-ktx:1.15.0")
-  api("androidx.fragment:fragment-ktx:1.8.6")
+  implementation(libs.androidx.appcompat)
+  implementation(libs.androidx.constraintlayout)
+  implementation(libs.material)
+  implementation(libs.androidx.core.ktx)
+  api(libs.androidx.fragment.ktx)
 }
