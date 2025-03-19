@@ -3,9 +3,7 @@ package com.robertlevonyan.compose.picker
 import android.Manifest
 import android.net.Uri
 import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -13,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,7 +27,7 @@ import androidx.compose.ui.unit.TextUnit
 import com.google.accompanist.insets.navigationBarsPadding
 import com.robertlevonyan.compose.picker.components.PickerGridItem
 import com.robertlevonyan.compose.picker.components.PickerListItem
-import com.robertlevonyan.compose.picker.ui.Dimens.FAB_MARGIN
+import com.robertlevonyan.compose.picker.components.PickerTitle
 import com.robertlevonyan.compose.picker.ui.Dimens.TITLE_TEXT_SIZE
 import kotlinx.coroutines.launch
 
@@ -58,14 +55,14 @@ fun PickerDialog(
         sheetState = bottomSheetState,
         onDismissRequest = { coroutine.launch { bottomSheetState.hide() } },
         content = {
-            CreateTitle(
+            PickerTitle(
                 dialogTitle = dialogTitle,
                 dialogTitleSize = dialogTitleSize,
                 dialogTitleColor = dialogTitleColor,
                 dialogTitleWeight = dialogTitleWeight,
                 dialogTitleAlignment = dialogTitleAlignment,
             )
-            CreateList(
+            PickerContent(
                 dialogListType = dialogListType,
                 dialogGridSpan = dialogGridSpan,
                 dialogItems = dialogItems,
@@ -77,40 +74,7 @@ fun PickerDialog(
 }
 
 @Composable
-private fun CreateTitle(
-    dialogTitle: String,
-    dialogTitleSize: TextUnit,
-    dialogTitleColor: Color,
-    dialogTitleWeight: FontWeight,
-    dialogTitleAlignment: TextAlign,
-) {
-    // if the title values are not set, than hide title
-    if (dialogTitle == "") {
-        return
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
-        Text(
-            text = dialogTitle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(all = FAB_MARGIN),
-            color = dialogTitleColor,
-            fontSize = dialogTitleSize,
-            fontWeight = dialogTitleWeight,
-            maxLines = 1,
-            textAlign = dialogTitleAlignment,
-        )
-    }
-}
-
-@Composable
-private fun CreateList(
+private fun PickerContent(
     dialogListType: ListType,
     dialogGridSpan: Int,
     dialogItems: Set<ItemModel> = emptySet(),

@@ -23,12 +23,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.robertlevonyan.compose.picker.ui.Dimens
 import com.robertlevonyan.compose.picker.ItemModel
 import com.robertlevonyan.compose.picker.ItemType
 import com.robertlevonyan.compose.picker.ShapeType
 import com.robertlevonyan.compose.picker.getCorrectItemIcon
 import com.robertlevonyan.compose.picker.getCorrectItemLabel
+import com.robertlevonyan.compose.picker.ui.Dimens
 
 @Composable
 internal fun PickerListItem(
