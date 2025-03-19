@@ -9,51 +9,51 @@ import com.robertlevonyan.compose.picker.contracts.FilePickerContract
 import com.robertlevonyan.compose.picker.contracts.RecordVideoContract
 
 internal object ActivityResultRequests {
-  @Composable
-  fun requestPermissions(onPermissionGranted: () -> Unit) = rememberLauncherForActivityResult(
-    contract = ActivityResultContracts.RequestMultiplePermissions()
-  ) { permissionsMap ->
-    if (permissionsMap.all { it.value }) {
-      onPermissionGranted.invoke()
+    @Composable
+    fun requestPermissions(onPermissionGranted: () -> Unit) = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionsMap ->
+        if (permissionsMap.all { it.value }) {
+            onPermissionGranted.invoke()
+        }
     }
-  }
 
-  @Composable
-  fun takePicture(
-    onPickerClosed: () -> Unit,
-  ) = rememberLauncherForActivityResult(
-    contract = ActivityResultContracts.TakePicture()
-  ) {
-    if (it) {
-      onPickerClosed()
-    } else {
-      Log.e("PickerDialog", "Camera failed to capture photo")
+    @Composable
+    fun takePicture(
+        onPickerClosed: () -> Unit,
+    ) = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) {
+        if (it) {
+            onPickerClosed()
+        } else {
+            Log.e("PickerDialog", "Camera failed to capture photo")
+        }
     }
-  }
 
-  @Composable
-  fun recordVideo(
-    onPickerClosed: () -> Unit,
-  ) = rememberLauncherForActivityResult(
-    contract = RecordVideoContract()
-  ) {
-    if (it) {
-      onPickerClosed()
-    } else {
-      Log.e("PickerDialog", "Camera failed to capture photo")
+    @Composable
+    fun recordVideo(
+        onPickerClosed: () -> Unit,
+    ) = rememberLauncherForActivityResult(
+        contract = RecordVideoContract()
+    ) {
+        if (it) {
+            onPickerClosed()
+        } else {
+            Log.e("PickerDialog", "Camera failed to capture photo")
+        }
     }
-  }
 
-  @Composable
-  fun openPicker(
-    onPickerClosed: (List<Uri>) -> Unit,
-  ) = rememberLauncherForActivityResult(
-    contract = FilePickerContract()
-  ) { uris ->
-    if (uris.isNotEmpty()) {
-      onPickerClosed(uris)
-    } else {
-      Log.e("PickerDialog", "Camera failed to capture photo")
+    @Composable
+    fun openPicker(
+        onPickerClosed: (List<Uri>) -> Unit,
+    ) = rememberLauncherForActivityResult(
+        contract = FilePickerContract()
+    ) { uris ->
+        if (uris.isNotEmpty()) {
+            onPickerClosed(uris)
+        } else {
+            Log.e("PickerDialog", "Camera failed to capture photo")
+        }
     }
-  }
 }

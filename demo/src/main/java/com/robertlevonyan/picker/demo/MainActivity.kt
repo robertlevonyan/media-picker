@@ -101,42 +101,42 @@ class MainActivity : AppCompatActivity() {
         Image(painter = rememberImagePainter(data = painterUri), contentDescription = null)
       }
 
-      PickerDialog(
-        dialogTitle = stringResource(id = R.string.app_name),
-        dialogTitleSize = 22.sp,
-        dialogTitleAlignment = TextAlign.End,
-        dialogListType = ListType.TYPE_LIST,
-        dialogGridSpan = 3,
-        dialogItems = setOf(
-          ItemModel(
-            ItemType.Camera,
-            backgroundType = ShapeType.TYPE_ROUNDED_SQUARE,
-            itemBackgroundColor = Red
-          ),
-          ItemModel(ItemType.Video),
-          ItemModel(ItemType.ImageGallery(MimeType.Image.Png)),
-          ItemModel(ItemType.VideoGallery()),
-          ItemModel(ItemType.AudioGallery(MimeType.Audio.Mp3)),
-          ItemModel(ItemType.Files()),
-        ),
-        onItemSelected = { selectedUris ->
-          painterUri = selectedUris.first()
-        }
-      ) { bottomSheetState ->
-        Column {
-          Button(onClick = {
-            coroutine.launch {
-              if (bottomSheetState.isVisible) {
-                bottomSheetState.hide()
-              } else {
-                bottomSheetState.show()
-              }
-            }
-          }) {
-            Text(text = "Click")
-          }
-        }
-      }
+//      PickerDialog(
+//        dialogTitle = stringResource(id = R.string.app_name),
+//        dialogTitleSize = 22.sp,
+//        dialogTitleAlignment = TextAlign.End,
+//        dialogListType = ListType.TYPE_LIST,
+//        dialogGridSpan = 3,
+//        dialogItems = setOf(
+//          ItemModel(
+//            ItemType.Camera,
+//            backgroundType = ShapeType.TYPE_ROUNDED_SQUARE,
+//            itemBackgroundColor = Red
+//          ),
+//          ItemModel(ItemType.Video),
+//          ItemModel(ItemType.ImageGallery(MimeType.Image.Png)),
+//          ItemModel(ItemType.VideoGallery()),
+//          ItemModel(ItemType.AudioGallery(MimeType.Audio.Mp3)),
+//          ItemModel(ItemType.Files()),
+//        ),
+//        onItemSelected = { selectedUris ->
+//          painterUri = selectedUris.first()
+//        }
+//      ) { bottomSheetState ->
+//        Column {
+//          Button(onClick = {
+//            coroutine.launch {
+//              if (bottomSheetState.isVisible) {
+//                bottomSheetState.hide()
+//              } else {
+//                bottomSheetState.show()
+//              }
+//            }
+//          }) {
+//            Text(text = "Click")
+//          }
+//        }
+//      }
     }
   }
 }

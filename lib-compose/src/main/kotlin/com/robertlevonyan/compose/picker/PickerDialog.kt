@@ -1,17 +1,26 @@
 package com.robertlevonyan.compose.picker
 
 import android.Manifest
-import android.content.ContentValues
-import android.content.Context
 import android.net.Uri
-import android.provider.MediaStore
 import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -19,16 +28,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import com.google.accompanist.insets.navigationBarsPadding
-import com.robertlevonyan.compose.picker.Dimens.FAB_MARGIN
-import com.robertlevonyan.compose.picker.Dimens.TITLE_TEXT_SIZE
 import com.robertlevonyan.compose.picker.components.PickerGridItem
 import com.robertlevonyan.compose.picker.components.PickerListItem
+import com.robertlevonyan.compose.picker.ui.Dimens.FAB_MARGIN
+import com.robertlevonyan.compose.picker.ui.Dimens.TITLE_TEXT_SIZE
 import kotlinx.coroutines.launch
 
 private val permissions =
     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 private val permissionsWithCamera = permissions + Manifest.permission.CAMERA
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PickerDialog(
     dialogTitle: String = "", // title string
@@ -40,34 +50,30 @@ fun PickerDialog(
     dialogGridSpan: Int = 2, // if dialogListType is set to ListType.TYPE_GRID, span count
     dialogItems: Set<ItemModel> = emptySet(), // items which should be on the picker list
     onItemSelected: (uris: List<Uri>) -> Unit, // invoked after an action of any item
-    content: @Composable (ModalBottomSheetState) -> Unit, // content which will trigger the dialog visibility
 ) {
-    val bottomSheetState =
-        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden) {
-            true
-        }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) { true }
+    val coroutine = rememberCoroutineScope()
 
-    ModalBottomSheetLayout(
+    ModalBottomSheet(
         sheetState = bottomSheetState,
-        sheetContent = {
-            Column {
-                CreateTitle(
-                    dialogTitle = dialogTitle,
-                    dialogTitleSize = dialogTitleSize,
-                    dialogTitleColor = dialogTitleColor,
-                    dialogTitleWeight = dialogTitleWeight,
-                    dialogTitleAlignment = dialogTitleAlignment,
-                )
-                CreateList(
-                    dialogListType = dialogListType,
-                    dialogGridSpan = dialogGridSpan,
-                    dialogItems = dialogItems,
-                    onItemSelected = onItemSelected,
-                    bottomSheetState = bottomSheetState,
-                )
-            }
+        onDismissRequest = { coroutine.launch { bottomSheetState.hide() } },
+        content = {
+            CreateTitle(
+                dialogTitle = dialogTitle,
+                dialogTitleSize = dialogTitleSize,
+                dialogTitleColor = dialogTitleColor,
+                dialogTitleWeight = dialogTitleWeight,
+                dialogTitleAlignment = dialogTitleAlignment,
+            )
+            CreateList(
+                dialogListType = dialogListType,
+                dialogGridSpan = dialogGridSpan,
+                dialogItems = dialogItems,
+                onItemSelected = onItemSelected,
+                onItemClick = { coroutine.launch { bottomSheetState.hide() } }
+            )
         },
-    ) { content(bottomSheetState) }
+    )
 }
 
 @Composable
@@ -108,8 +114,8 @@ private fun CreateList(
     dialogListType: ListType,
     dialogGridSpan: Int,
     dialogItems: Set<ItemModel> = emptySet(),
-    bottomSheetState: ModalBottomSheetState,
     onItemSelected: (uris: List<Uri>) -> Unit,
+    onItemClick: (ItemModel) -> Unit = {},
 ) {
     val context = LocalContext.current
     var inputTypes: List<String> by remember { mutableStateOf(emptyList()) }
@@ -144,33 +150,34 @@ private fun CreateList(
     when (dialogListType) {
         ListType.TYPE_LIST -> CreateColumn(
             dialogItems = dialogItems,
-            bottomSheetState = bottomSheetState,
             cameraPermissionRequest = cameraPermissionRequest,
             imageGalleryPermissionRequest = imageGalleryPermissionRequest,
             videoPermissionRequest = videoPermissionRequest,
             videoGalleryPermissionRequest = videoGalleryPermissionRequest,
             audioGalleryPermissionRequest = audioGalleryPermissionRequest,
             filePickerPermissionRequest = filePickerPermissionRequest,
-        ) { inputTypes = it }
+            inputTypeAction = { inputTypes = it },
+            onItemClick = onItemClick,
+        )
 
         ListType.TYPE_GRID -> CreateGrid(
             dialogGridSpan = dialogGridSpan,
             dialogItems = dialogItems,
-            bottomSheetState = bottomSheetState,
             cameraPermissionRequest = cameraPermissionRequest,
             imageGalleryPermissionRequest = imageGalleryPermissionRequest,
             videoPermissionRequest = videoPermissionRequest,
             videoGalleryPermissionRequest = videoGalleryPermissionRequest,
             audioGalleryPermissionRequest = audioGalleryPermissionRequest,
             filePickerPermissionRequest = filePickerPermissionRequest,
-        ) { inputTypes = it }
+            inputTypeAction = { inputTypes = it },
+            onItemClick = onItemClick,
+        )
     }
 }
 
 @Composable
 private fun CreateColumn(
     dialogItems: Set<ItemModel> = emptySet(),
-    bottomSheetState: ModalBottomSheetState,
     cameraPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     imageGalleryPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     videoPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
@@ -178,9 +185,8 @@ private fun CreateColumn(
     audioGalleryPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     filePickerPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     inputTypeAction: (List<String>) -> Unit,
+    onItemClick: (ItemModel) -> Unit = {},
 ) {
-    val coroutine = rememberCoroutineScope()
-
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -192,29 +198,17 @@ private fun CreateColumn(
                 when (itemModel.type) {
                     ItemType.Camera -> cameraPermissionRequest.launch(permissionsWithCamera)
                     ItemType.Video -> videoPermissionRequest.launch(permissionsWithCamera)
-                    is ItemType.ImageGallery -> {
-                        val mimeTypes = itemModel.type.mimeTypes
-                        val inputTypes = if (mimeTypes.isEmpty()) {
-                            listOf(MimeType.Image.All)
-                        } else {
-                            mimeTypes.toList()
-                        }.map { it.type }
+                    is ItemType.ImageGallery -> imageGalleryItemAction(
+                        itemType = itemModel.type,
+                        imageGalleryPermissionRequest = imageGalleryPermissionRequest,
+                        inputTypeAction = inputTypeAction,
+                    )
 
-                        inputTypeAction.invoke(inputTypes)
-                        imageGalleryPermissionRequest.launch(permissions)
-                    }
-
-                    is ItemType.VideoGallery -> {
-                        val mimeTypes = itemModel.type.mimeTypes
-                        val inputTypes = if (mimeTypes.isEmpty()) {
-                            listOf(MimeType.Video.All)
-                        } else {
-                            mimeTypes.toList()
-                        }.map { it.type }
-
-                        inputTypeAction.invoke(inputTypes)
-                        videoGalleryPermissionRequest.launch(permissions)
-                    }
+                    is ItemType.VideoGallery -> videoGalleryItemAction(
+                        itemType = itemModel.type,
+                        videoGalleryPermissionRequest = videoGalleryPermissionRequest,
+                        inputTypeAction = inputTypeAction,
+                    )
 
                     is ItemType.AudioGallery -> {
                         val mimeTypes = itemModel.type.mimeTypes
@@ -240,9 +234,7 @@ private fun CreateColumn(
                         filePickerPermissionRequest.launch(permissions)
                     }
                 }
-                coroutine.launch {
-                    bottomSheetState.hide()
-                }
+                onItemClick(itemModel)
             }
         }
     }
@@ -252,7 +244,6 @@ private fun CreateColumn(
 private fun CreateGrid(
     dialogGridSpan: Int,
     dialogItems: Set<ItemModel> = emptySet(),
-    bottomSheetState: ModalBottomSheetState,
     cameraPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     imageGalleryPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     videoPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
@@ -260,9 +251,8 @@ private fun CreateGrid(
     audioGalleryPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     filePickerPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
     inputTypeAction: (List<String>) -> Unit,
+    onItemClick: (ItemModel) -> Unit = {},
 ) {
-    val coroutine = rememberCoroutineScope()
-
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
@@ -275,30 +265,17 @@ private fun CreateGrid(
                 when (itemModel.type) {
                     ItemType.Camera -> cameraPermissionRequest.launch(permissionsWithCamera)
                     ItemType.Video -> videoPermissionRequest.launch(permissionsWithCamera)
-                    is ItemType.ImageGallery -> {
-                        val mimeTypes = itemModel.type.mimeTypes
-                        val inputTypes = if (mimeTypes.isEmpty()) {
-                            listOf(MimeType.Image.All)
-                        } else {
-                            mimeTypes.toList()
-                        }.map { it.type }
+                    is ItemType.ImageGallery -> imageGalleryItemAction(
+                        itemType = itemModel.type,
+                        imageGalleryPermissionRequest = imageGalleryPermissionRequest,
+                        inputTypeAction = inputTypeAction,
+                    )
 
-                        inputTypeAction.invoke(inputTypes)
-
-                        imageGalleryPermissionRequest.launch(permissions)
-                    }
-
-                    is ItemType.VideoGallery -> {
-                        val mimeTypes = itemModel.type.mimeTypes
-                        val inputTypes = if (mimeTypes.isEmpty()) {
-                            listOf(MimeType.Video.All)
-                        } else {
-                            mimeTypes.toList()
-                        }.map { it.type }
-
-                        inputTypeAction.invoke(inputTypes)
-                        videoGalleryPermissionRequest.launch(permissions)
-                    }
+                    is ItemType.VideoGallery -> videoGalleryItemAction(
+                        itemType = itemModel.type,
+                        videoGalleryPermissionRequest = videoGalleryPermissionRequest,
+                        inputTypeAction = inputTypeAction,
+                    )
 
                     is ItemType.AudioGallery -> {
                         val mimeTypes = itemModel.type.mimeTypes
@@ -324,12 +301,42 @@ private fun CreateGrid(
                         filePickerPermissionRequest.launch(permissions)
                     }
                 }
-                coroutine.launch {
-                    bottomSheetState.hide()
-                }
+                onItemClick(itemModel)
             }
         }
     }
+}
+
+private fun imageGalleryItemAction(
+    itemType: ItemType.ImageGallery,
+    imageGalleryPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    inputTypeAction: (List<String>) -> Unit,
+) {
+    val mimeTypes = itemType.mimeTypes
+    val inputTypes = if (mimeTypes.isEmpty()) {
+        listOf(MimeType.Image.All)
+    } else {
+        mimeTypes.toList()
+    }.map { it.type }
+
+    inputTypeAction(inputTypes)
+    imageGalleryPermissionRequest.launch(permissions)
+}
+
+private fun videoGalleryItemAction(
+    itemType: ItemType.VideoGallery,
+    videoGalleryPermissionRequest: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    inputTypeAction: (List<String>) -> Unit,
+) {
+    val mimeTypes = itemType.mimeTypes
+    val inputTypes = if (mimeTypes.isEmpty()) {
+        listOf(MimeType.Video.All)
+    } else {
+        mimeTypes.toList()
+    }.map { it.type }
+
+    inputTypeAction(inputTypes)
+    videoGalleryPermissionRequest.launch(permissions)
 }
 
 enum class ListType {

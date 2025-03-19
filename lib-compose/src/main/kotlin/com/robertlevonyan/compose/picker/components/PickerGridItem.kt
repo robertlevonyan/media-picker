@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import com.robertlevonyan.compose.picker.*
+import com.robertlevonyan.compose.picker.ui.Dimens
 
 @Composable
 internal fun PickerGridItem(
