@@ -39,5 +39,7 @@ dependencies {
   implementation(libs.androidx.compose.foundation)
   implementation(libs.androidx.compose.material3)
   implementation(libs.androidx.compose.ui.tooling)
-  implementation(libs.picker)
+//  implementation(libs.picker)
+  implementation(project(":lib"))
+  implementation(project(":lib-compose"))
 }

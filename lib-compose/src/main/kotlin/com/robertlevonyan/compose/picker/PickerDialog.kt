@@ -25,23 +25,29 @@ fun PickerDialog(
     dialogTitleAlignment: TextAlign = TextAlign.Start, // choose the alignment of the title
     dialogListType: ListType = ListType.TYPE_LIST, // picker items list or grid
     dialogGridSpan: Int = 2, // if dialogListType is set to ListType.TYPE_GRID, span count
-    dialogItems: Set<ItemModel> = emptySet(), // items which should be on the picker list
+    dialogItems: Set<ItemModel>, // items which should be on the picker list
     onItemSelected: (uris: List<Uri>) -> Unit, // invoked after an action of any item
+    onDismissRequest: () -> Unit,
 ) {
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true) { true }
     val coroutine = rememberCoroutineScope()
 
     ModalBottomSheet(
         sheetState = bottomSheetState,
-        onDismissRequest = { coroutine.launch { bottomSheetState.hide() } },
+        onDismissRequest = {
+            coroutine.launch { bottomSheetState.hide() }
+            onDismissRequest()
+        },
         content = {
-            PickerTitle(
-                dialogTitle = dialogTitle,
-                dialogTitleSize = dialogTitleSize,
-                dialogTitleColor = dialogTitleColor,
-                dialogTitleWeight = dialogTitleWeight,
-                dialogTitleAlignment = dialogTitleAlignment,
-            )
+            if (dialogTitle.isNotEmpty()) {
+                PickerTitle(
+                    dialogTitle = dialogTitle,
+                    dialogTitleSize = dialogTitleSize,
+                    dialogTitleColor = dialogTitleColor,
+                    dialogTitleWeight = dialogTitleWeight,
+                    dialogTitleAlignment = dialogTitleAlignment,
+                )
+            }
             PickerContent(
                 dialogListType = dialogListType,
                 dialogGridSpan = dialogGridSpan,
