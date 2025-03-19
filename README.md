@@ -3,10 +3,9 @@
 |Easy customizable picker for all your needs in Android application|<img src="https://github.com/robertlevonyan/MediaPicker/blob/master/Images/picker.png"  width="400" />|
 |----------------------------------------------------------------------------------------------|-----------|
 
-|Android Arsenal|[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Universal%20Media%20Picker-yellow.svg?style=flat-square)](https://android-arsenal.com/details/1/6862) [![API](https://img.shields.io/badge/API-14%2B-yellow.svg?style=flat-square)](https://android-arsenal.com/api?level=14)|
+|PickerDialogVersion|PickerComposeVersion|
 |--------------------|--------------------|
-|PickerDialogVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.components/Picker)|
-|PickerComposeVersion|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.compose/picker/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.robertlevonyan.compose/picker)|
+|![Maven Central Version](https://img.shields.io/maven-central/v/com.robertlevonyan.components/picker)|![Maven Central Version](https://img.shields.io/maven-central/v/com.robertlevonyan.components/picker)|
 
 ## Setup
 
