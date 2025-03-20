@@ -5,7 +5,7 @@
 
 |PickerDialogVersion|PickerComposeVersion|
 |--------------------|--------------------|
-|![Maven Central Version](https://img.shields.io/maven-central/v/com.robertlevonyan.components/picker)|![Maven Central Version](https://img.shields.io/maven-central/v/com.robertlevonyan.components/picker)|
+|![Maven Central Version](https://img.shields.io/maven-central/v/com.robertlevonyan.components/Picker)|![Maven Central Version](https://img.shields.io/maven-central/v/com.robertlevonyan.compose/picker)|
 
 ## Setup
 
@@ -142,26 +142,8 @@ Now you can set custom file types for pickers
 
 ```kotlin
 setContent {
- val coroutine = rememberCoroutineScope()
-
- PickerDialog(
-   dialogTitle = stringResource(id = R.string.app_name),
-   dialogTitleSize = 22.sp,
-   dialogListType = ListType.TYPE_GRID,
-   dialogGridSpan = 3,
-   dialogItems = setOf(
-     ItemModel(ItemType.Camera, backgroundType = ShapeType.TYPE_ROUNDED_SQUARE, itemBackgroundColor = Color.Red),
-     ItemModel(ItemType.Video),
-     ItemModel(ItemType.ImageGallery()),
-     ItemModel(ItemType.AudioGallery()),
-     ItemModel(ItemType.VideoGallery()),
-     ItemModel(ItemType.Files())
-   ),
-   onItemSelected = { selectedUris ->
-    // get uris
-   }
- ) { bottomSheetState ->
-   Column {
+  var showDialog by remember { mutableStateOf(false) }
+  Column {
      Button(onClick = {
        coroutine.launch {
          if (bottomSheetState.isVisible) {
@@ -173,9 +155,22 @@ setContent {
      }) {
        Text(text = "Open picker")
      }
-   }
- }
-}
+  }
+
+  if (showDialog) {
+    PickerDialog(
+      dialogTitle = "PickerDialog",
+      dialogItems = setOf(
+        ItemModel(type = ItemType.Camera),
+        ItemModel(type = ItemType.Video),
+      ),
+      onItemSelected = {
+        showDialog = false
+        // do something with URIs
+      },
+      onDismissRequest = { showDialog = false },
+    )
+  }
 ```
 
 And the result is
@@ -186,49 +181,45 @@ And the result is
 
 ## Versions
 
-### 2.2.0
+#### 2.2.1-2.2.6
+Minor imrovements and dependency dump
 
+### 2.2.0
 More customizable item types
 
 ### 2.1.2 - 2.1.6
-
 Update to Java 11
 SDK 31 ready
 Minor updates
 
 #### 2.1.1
-
 Single picker issue fixed
 
 ### 2.1.0
-
 Migration to mavenCentral
 
 #### 2.0.1 - 2.0.2
-
 Refactoring and some UI changes
 
 ### 2.0.0
-
 New version of library.
 Mostly rewritten. Now supports multiple selection.
 
 #### 1.0.1 - 1.1.5
-
 Refactoring and some UI changes
 
 ### 1.0.0
-
 First version of library
 
 ## Compose versions
 
-### 1.1.0
+### 1.2.0
+Migrate to Material 3
 
+### 1.1.0
 More customizable item types
 
 ### 1.0.0
-
 First version of library
 
 ## Contact
