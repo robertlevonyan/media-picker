@@ -1,14 +1,13 @@
 plugins {
   alias(libs.plugins.android.library)
-  alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.maven.publish)
 }
 
 android {
-  compileSdk = 35
+  compileSdk = 37
   defaultConfig {
-    minSdk = 21
+    minSdk = 23
     vectorDrawables.useSupportLibrary = true
   }
   buildFeatures {
@@ -18,13 +17,16 @@ android {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
   }
-  kotlinOptions {
-    jvmTarget = "17"
-  }
   lint {
     abortOnError = false
   }
   namespace = "com.robertlevonyan.components.picker"
+}
+
+kotlin {
+  compilerOptions {
+    jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+  }
 }
 
 dependencies {

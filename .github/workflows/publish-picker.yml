@@ -1,0 +1,17 @@
+name: Publish Picker (View)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Dry run (build, test, publish to mavenLocal only)
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish.yml
+    with:
+      module: lib
+      dry_run: ${{ inputs.dry_run }}
+    secrets: inherit

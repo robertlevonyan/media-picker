@@ -1,0 +1,77 @@
+name: Publish (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      module:
+        description: Gradle module to publish (lib or lib-compose)
+        required: true
+        type: string
+      dry_run:
+        description: Build, test and publish to mavenLocal only
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      MAVEN_CENTRAL_USERNAME:
+        required: false
+      MAVEN_CENTRAL_PASSWORD:
+        required: false
+      SIGNING_KEY:
+        required: false
+      SIGNING_KEY_ID:
+        required: false
+      SIGNING_KEY_PASSWORD:
+        required: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: jetbrains
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Read coordinates
+        id: coords
+        run: |
+          props="${{ inputs.module }}/gradle.properties"
+          get() { grep "^$1=" "$props" | cut -d= -f2; }
+          group=$(get GROUP); artifact=$(get POM_ARTIFACT_ID); version=$(get VERSION_NAME)
+          echo "group=$group" >> "$GITHUB_OUTPUT"
+          echo "artifact=$artifact" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "### $group:$artifact:$version" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if version already on Maven Central
+        if: ${{ !inputs.dry_run }}
+        run: |
+          path="$(echo '${{ steps.coords.outputs.group }}' | tr . /)/${{ steps.coords.outputs.artifact }}/${{ steps.coords.outputs.version }}"
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://repo1.maven.org/maven2/$path/")
+          if [ "$code" = 200 ]; then
+            echo "::error::${{ steps.coords.outputs.version }} is already published. Bump VERSION_NAME in ${{ inputs.module }}/gradle.properties."
+            exit 1
+          fi
+
+      - name: Build, lint and test
+        run: ./gradlew :${{ inputs.module }}:assembleRelease :${{ inputs.module }}:lint :${{ inputs.module }}:test
+
+      - name: Publish to mavenLocal (dry run)
+        if: ${{ inputs.dry_run }}
+        run: ./gradlew :${{ inputs.module }}:publishToMavenLocal -PRELEASE_SIGNING_ENABLED=false
+
+      - name: Publish to Maven Central
+        if: ${{ !inputs.dry_run }}
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: ./gradlew :${{ inputs.module }}:publishAndReleaseToMavenCentral --no-configuration-cache

@@ -1,29 +1,27 @@
 [versions]
-androidGradlePlugin = "8.10.0"
-androidxActivity = "1.10.1"
-androidxComposeBom = "2025.04.01"
-appcompat = "1.7.0"
+androidGradlePlugin = "9.5.0"
+androidxActivity = "1.13.0"
+androidxComposeBom = "2026.09.00"
+appcompat = "1.8.0"
 coil = "2.7.0"
-coilVideo = "2.4.0"
-constraintlayout = "2.2.1"
-coreKtx = "1.16.0"
-fragmentKtx = "1.8.6"
-kotlin = "2.1.20"
-dokka = "1.9.20"
-material = "1.12.0"
-material3 = "1.3.2"
-maven = "0.31.0"
-picker = "1.1.1"
-ui = "1.8.1"
+coilVideo = "2.7.0"
+constraintlayout = "2.2.2"
+coreKtx = "1.19.1"
+fragmentKtx = "1.9.1"
+kotlin = "2.4.21"
+dokka = "2.2.0"
+material = "1.14.0"
+maven = "0.37.0"
+picker = "1.2.2"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
-androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "ui" }
-androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "ui" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
@@ -37,7 +35,6 @@ picker = { module = "com.robertlevonyan.compose:picker", version.ref = "picker" 
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven" }

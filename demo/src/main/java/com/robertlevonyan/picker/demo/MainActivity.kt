@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import coil.compose.rememberImagePainter
 import com.robertlevonyan.compose.picker.ItemModel
@@ -134,7 +136,7 @@ class MainActivity : AppCompatActivity() {
 //          painterUri = selectedUris.first()
 //        }
 //      ) { bottomSheetState ->
-            Column {
+            Column(modifier = Modifier.safeDrawingPadding()) {
                 Button(onClick = {
                     showDialog = true
                 }) {
